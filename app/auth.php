@@ -1,7 +1,4 @@
 <?php
-// app/auth.php
-session_start();
-
 require_once __DIR__ . '/../config/config.php';
 
 function registerUser($username, $email, $password) {
