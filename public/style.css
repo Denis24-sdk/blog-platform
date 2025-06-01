@@ -42,6 +42,9 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
+
+
+
 .container:hover {
   box-shadow:
     0 12px 40px 0 rgba(31, 38, 135, 0.5),
@@ -282,21 +285,23 @@ p a:focus {
 
 .btn-secondary {
   display: inline-block;
-  padding: 10px 26px;
-  background: rgba(255,255,255,0.15);
+  padding: 14px 30px;
+  background: rgba(131, 133, 255, 0.613);
   color: #e0e7ff;
   border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(121, 72, 255, 0.663);
   transition: background 0.3s ease;
   user-select: none;
+  margin-top: 2rem;
 }
 .btn-secondary:hover,
 .btn-secondary:focus {
-  background: rgba(255,255,255,0.3);
+  background: rgba(94, 97, 255, 0.613);
   outline: none;
+  color: #a4a4a4;
 }
 
 
