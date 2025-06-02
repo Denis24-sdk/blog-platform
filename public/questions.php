@@ -35,15 +35,13 @@ $questions = $stmt->fetchAll();
     }
 
     .questions-wrapper {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 24px;
       margin-top: 24px;
     }
 
     .question {
-      flex: 1 1 calc(33.333% - 24px);
-      /* 3 колонки */
       background: rgba(93, 117, 189, 0.14);
       border-radius: 18px;
       padding: 28px 32px;
@@ -115,21 +113,23 @@ $questions = $stmt->fetchAll();
     <?php else: ?>
       <div class="questions-wrapper">
         <?php foreach ($questions as $q): ?>
-          <div class="question">
-            <h3><?= htmlspecialchars($q['title']) ?></h3>
-            <div class="author">Автор: <?= htmlspecialchars($q['username']) ?>, <?= htmlspecialchars($q['created_at']) ?>
+          <a href="question.php?id=<?= $q['id'] ?>" class="question-link" style="text-decoration:none; color:inherit;">
+            <div class="question">
+              <h3><?= htmlspecialchars($q['title']) ?></h3>
+              <div class="author">Автор: <?= htmlspecialchars($q['username']) ?>, <?= htmlspecialchars($q['created_at']) ?>
+              </div>
+              <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
+
+              <?php if ($q['user_id'] == $_SESSION['user_id']): ?>
+                <form method="POST" action="delete_question.php" onsubmit="return confirm('Удалить этот вопрос?');"
+                  style="margin-top:auto;">
+                  <input type="hidden" name="question_id" value="<?= $q['id'] ?>">
+                  <button type="submit" class="btn-delete"> Удалить </button>
+                </form>
+              <?php endif; ?>
             </div>
-            <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
-
-            <?php if ($q['user_id'] == $_SESSION['user_id']): ?>
-              <form method="POST" action="delete_question.php" onsubmit="return confirm('Удалить этот вопрос?');">
-                <input type="hidden" name="question_id" value="<?= $q['id'] ?>">
-                <button type="submit" class="btn-delete"> Удалить </button>
-              </form>
-            <?php endif; ?>
-          </div>
+          </a>
         <?php endforeach; ?>
-
       </div>
     <?php endif; ?>
     <p><a href="index.php" class="btn-secondary">Назад</a></p>
