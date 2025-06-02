@@ -1,0 +1,278 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #000;
+  color: #00ff00;
+  font-family: 'Source Code Pro', monospace, monospace;
+  padding: 40px 30px 60px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* Заголовки с эффектом "неона" */
+h1, h2 {
+  color: #00ff00;
+  text-shadow:
+    0 0 5px #00ff00,
+    0 0 10px #00ff00,
+    0 0 20px #00ff00,
+    0 0 40px #00ff00;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+  font-family: 'Source Code Pro', monospace, monospace;
+}
+
+/* Ссылки — яркий зелёный с мерцанием */
+a {
+  color: #00ff00;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+  font-weight: 600;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: #00ff00;
+  opacity: 0.6;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  color: #7fff7f;
+  outline: none;
+}
+
+a:hover::after,
+a:focus::after {
+  transform: scaleX(1);
+}
+
+/* Параграфные ссылки */
+p a {
+  margin-right: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Таблица — терминальный стиль */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 32px;
+  font-size: 1rem;
+  background: #000;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  box-shadow:
+    0 0 10px #00ff00,
+    inset 0 0 10px #00ff00;
+  overflow: hidden;
+}
+
+/* Заголовок таблицы */
+thead tr {
+  background: #003300;
+  border-bottom: 2px solid #00ff00;
+}
+
+thead th {
+  padding: 16px 24px;
+  text-align: left;
+  font-weight: 700;
+  color: #00ff00;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-right: 1px solid #006600;
+  user-select: none;
+}
+
+thead th:last-child {
+  border-right: none;
+}
+
+/* Тело таблицы */
+tbody tr {
+  border-bottom: 1px solid #004400;
+  transition: background-color 0.3s ease;
+  cursor: default;
+}
+
+tbody tr:hover {
+  background-color: #003300;
+  box-shadow:
+    0 0 8px #00ff00;
+}
+
+tbody td {
+  padding: 14px 24px;
+  color: #00ff00;
+  border-right: 1px solid #004400;
+  vertical-align: middle;
+  font-family: 'Source Code Pro', monospace, monospace;
+}
+
+tbody td:last-child {
+  border-right: none;
+}
+
+/* Кнопки в стиле терминала */
+a.delete,
+a.comments-link {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background-color: transparent;
+  border: 2px solid #00ff00;
+  color: #00ff00 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow:
+    0 0 10px #00ff00;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.15s ease;
+  user-select: none;
+}
+
+/* Эффект мерцания */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 5px #00ff00,
+      0 0 10px #00ff00,
+      0 0 20px #00ff00,
+      0 0 40px #00ff00;
+  }
+  20%, 22%, 24%, 55% {
+    opacity: 0.7;
+    text-shadow: none;
+  }
+}
+
+a.delete:hover,
+a.delete:focus {
+  background-color: #00ff00;
+  color: #000 !important;
+  box-shadow:
+    0 0 20px #00ff00,
+    0 0 30px #00ff00,
+    0 0 40px #7fff7f;
+  transform: scale(1.05);
+  animation: flicker 1.5s infinite;
+  outline: none;
+}
+
+a.comments-link:hover,
+a.comments-link:focus {
+  background-color: #00cc00;
+  color: #000 !important;
+  box-shadow:
+    0 0 20px #00ff00,
+    0 0 30px #00cc00,
+    0 0 40px #7fff7f;
+  transform: scale(1.05);
+  animation: flicker 1.5s infinite;
+  outline: none;
+}
+
+/* Мобильная адаптивность */
+@media (max-width: 768px) {
+  body {
+    padding: 20px 15px 40px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+    width: 100%;
+  }
+
+  thead tr {
+    display: none;
+  }
+
+  tbody tr {
+    margin-bottom: 24px;
+    background: #000;
+    border: 2px solid #00ff00;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow:
+      0 0 10px #00ff00,
+      inset 0 0 10px #00ff00;
+    cursor: default;
+    transition: box-shadow 0.3s ease;
+  }
+
+  tbody tr:hover {
+    box-shadow:
+      0 0 20px #00ff00,
+      inset 0 0 20px #00ff00;
+  }
+
+  tbody td {
+    padding: 10px 0;
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    color: #00ff00;
+    font-size: 1rem;
+    font-family: 'Source Code Pro', monospace, monospace;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45%;
+    font-weight: 700;
+    color: #007700;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  a.delete,
+  a.comments-link {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px 0;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    justify-content: center;
+  }
+}
+
