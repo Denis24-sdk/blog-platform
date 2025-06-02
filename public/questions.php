@@ -8,11 +8,12 @@ if (!is_logged_in()) {
 
 // Получаем все вопросы с именами авторов
 $stmt = $pdo->query("
-  SELECT q.id, q.title, q.body, q.created_at, u.username
+  SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username
   FROM questions q
   JOIN users u ON q.user_id = u.id
   ORDER BY q.created_at DESC
 ");
+
 $questions = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -61,14 +62,14 @@ $questions = $stmt->fetchAll();
       font-weight: 700;
       font-size: 1.8rem;
       line-height: 1.3;
-      color:rgb(212, 224, 255);
+      color: rgb(212, 224, 255);
       text-shadow: 0 0 5px rgba(119, 158, 255, 0.7);
     }
 
     .question .author {
       font-size: 1rem;
       font-weight: 600;
-      color:rgb(144, 170, 224);
+      color: rgb(144, 170, 224);
       margin-bottom: 18px;
       letter-spacing: 0.04em;
       font-style: italic;
@@ -78,7 +79,7 @@ $questions = $stmt->fetchAll();
       margin: 0;
       font-size: 1.15rem;
       line-height: 0.9;
-      color:rgb(203, 203, 203);
+      color: rgb(203, 203, 203);
       white-space: pre-wrap;
       letter-spacing: 0.015em;
       flex-grow: 1;
@@ -87,6 +88,21 @@ $questions = $stmt->fetchAll();
       display: -webkit-box;
       -webkit-line-clamp: 7;
       -webkit-box-orient: vertical;
+    }
+
+    .btn-delete {
+      display: block;
+      margin: 0 auto;
+      width: 130px;
+      margin-top: 30px;
+      background: rgba(255, 59, 99, 0.25);
+    }
+
+    .btn-delete:hover,
+    .btn-delete:focus {
+      background: rgba(255, 57, 97, 0.65);
+      transform: translateY(-2px);
+      outline: none;
     }
   </style>
 </head>
@@ -104,8 +120,16 @@ $questions = $stmt->fetchAll();
             <div class="author">Автор: <?= htmlspecialchars($q['username']) ?>, <?= htmlspecialchars($q['created_at']) ?>
             </div>
             <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
+
+            <?php if ($q['user_id'] == $_SESSION['user_id']): ?>
+              <form method="POST" action="delete_question.php" onsubmit="return confirm('Удалить этот вопрос?');">
+                <input type="hidden" name="question_id" value="<?= $q['id'] ?>">
+                <button type="submit" class="btn-delete"> Удалить </button>
+              </form>
+            <?php endif; ?>
           </div>
         <?php endforeach; ?>
+
       </div>
     <?php endif; ?>
     <p><a href="index.php" class="btn-secondary">Назад</a></p>
