@@ -25,27 +25,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Вход</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="..\styles\login.css">
 </head>
 
 <body>
     <div class="container">
         <h2>Вход</h2>
         <?php if ($message): ?>
-            <p style="color:red;"><?= htmlspecialchars($message) ?></p>
+            <p class="message"><?= htmlspecialchars($message) ?></p>
         <?php endif; ?>
-        <form method="post" action="login.php">
-            <label>Имя пользователя:<br>
-                <input type="text" name="username" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
-            </label><br><br>
-            <label>Пароль:<br>
-                <input type="password" name="password">
-            </label><br><br>
+        <form method="post" action="login.php" novalidate>
+            <input type="text" name="username" placeholder="Имя пользователя" aria-label="Имя пользователя"
+                value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
+            <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
             <button type="submit">Войти</button>
         </form>
         <p><a href="register.php">Регистрация</a></p>
     </div>
-
 </body>
 
 </html>

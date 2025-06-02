@@ -30,33 +30,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Регистрация</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="..\styles\register.css">
 </head>
 
 <body>
     <div class="container">
         <h2>Регистрация</h2>
         <?php if ($message): ?>
-            <p style="color:red;"><?= htmlspecialchars($message) ?></p>
+            <p class="message"><?= htmlspecialchars($message) ?></p>
         <?php endif; ?>
-        <form method="post" action="register.php">
-            <label>Имя пользователя:<br>
-                <input type="text" name="username" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
-            </label><br><br>
-            <label>Email:<br>
-                <input type="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-            </label><br><br>
-            <label>Пароль:<br>
-                <input type="password" name="password">
-            </label><br><br>
-            <label>Повторите пароль:<br>
-                <input type="password" name="password_confirm">
-            </label><br><br>
+        <form method="post" action="register.php" novalidate>
+            <input type="text" name="username" placeholder="Имя пользователя" aria-label="Имя пользователя"
+                value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
+            <input type="email" name="email" placeholder="Email" aria-label="Email"
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+            <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
+            <input type="password" name="password_confirm" placeholder="Повторите пароль" aria-label="Повторите пароль"
+                required>
             <button type="submit">Зарегистрироваться</button>
         </form>
         <p><a href="login.php">Вход</a></p>
     </div>
-
 </body>
 
 </html>

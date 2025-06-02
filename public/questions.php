@@ -21,88 +21,9 @@ $questions = $stmt->fetchAll();
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .container-recommend {
-      max-width: 1600px;
-      width: 95%;
-      margin: 0 auto;
-      padding: 20px;
-      box-sizing: border-box;
-      color: #e0e7ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .questions-wrapper {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 24px;
-    }
-
-    .question {
-      background: rgba(93, 117, 189, 0.14);
-      border-radius: 18px;
-      padding: 28px 32px;
-      box-shadow: 0 6px 20px rgba(29, 44, 88, 0.5);
-      transition: background-color 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .question:hover {
-      background: rgba(94, 120, 179, 0.56);
-    }
-
-    .question h3 {
-      margin: 0;
-      font-weight: 700;
-      font-size: 1.8rem;
-      line-height: 1.3;
-      color: rgb(212, 224, 255);
-      text-shadow: 0 0 5px rgba(119, 158, 255, 0.7);
-    }
-
-    .question .author {
-      font-size: 1rem;
-      font-weight: 600;
-      color: rgb(144, 170, 224);
-      margin-bottom: 18px;
-      letter-spacing: 0.04em;
-      font-style: italic;
-    }
-
-    .question p {
-      margin: 0;
-      font-size: 1.15rem;
-      line-height: 0.9;
-      color: rgb(203, 203, 203);
-      white-space: pre-wrap;
-      letter-spacing: 0.015em;
-      flex-grow: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 7;
-      -webkit-box-orient: vertical;
-    }
-
-    .btn-delete {
-      display: block;
-      margin: 0 auto;
-      width: 130px;
-      margin-top: 30px;
-      background: rgba(255, 59, 99, 0.25);
-    }
-
-    .btn-delete:hover,
-    .btn-delete:focus {
-      background: rgba(255, 57, 97, 0.65);
-      transform: translateY(-2px);
-      outline: none;
-    }
-  </style>
+  <link rel="stylesheet" href="..\styles\questions.css">
 </head>
 
 <body>
@@ -113,7 +34,7 @@ $questions = $stmt->fetchAll();
     <?php else: ?>
       <div class="questions-wrapper">
         <?php foreach ($questions as $q): ?>
-          <a href="question.php?id=<?= $q['id'] ?>" class="question-link" style="text-decoration:none; color:inherit;">
+          <a href="question.php?id=<?= $q['id'] ?>" class="question-link" tabindex="0">
             <div class="question">
               <h3><?= htmlspecialchars($q['title']) ?></h3>
               <div class="author">Автор: <?= htmlspecialchars($q['username']) ?>, <?= htmlspecialchars($q['created_at']) ?>
@@ -122,9 +43,15 @@ $questions = $stmt->fetchAll();
 
               <?php if ($q['user_id'] == $_SESSION['user_id']): ?>
                 <form method="POST" action="delete_question.php" onsubmit="return confirm('Удалить этот вопрос?');"
-                  style="margin-top:auto;">
+                  tabindex="-1">
                   <input type="hidden" name="question_id" value="<?= $q['id'] ?>">
-                  <button type="submit" class="btn-delete"> Удалить </button>
+                  <button type="submit" class="btn-delete" aria-label="Удалить вопрос">
+                    <!-- Иконка корзины -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M3 6h18v2H3V6zm2 3h14l-1.5 12.5a1 1 0 01-1 .5H8a1 1 0 01-1-.5L5 9zm5 3v6h2v-6h-2z" />
+                    </svg>
+                    Удалить
+                  </button>
                 </form>
               <?php endif; ?>
             </div>
@@ -132,7 +59,7 @@ $questions = $stmt->fetchAll();
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
-    <p><a href="index.php" class="btn-secondary">Назад</a></p>
+    <p><a href="index.php" class="btn-secondary">← Назад</a></p>
   </div>
 </body>
 
