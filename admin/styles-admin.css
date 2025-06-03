@@ -17,7 +17,8 @@ body {
 }
 
 /* Заголовки с эффектом "неона" */
-h1, h2 {
+h1,
+h2 {
   color: #00ff00;
   text-shadow:
     0 0 5px #00ff00,
@@ -162,7 +163,15 @@ a.comments-link {
 
 /* Эффект мерцания */
 @keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
     opacity: 1;
     text-shadow:
       0 0 5px #00ff00,
@@ -170,7 +179,11 @@ a.comments-link {
       0 0 20px #00ff00,
       0 0 40px #00ff00;
   }
-  20%, 22%, 24%, 55% {
+
+  20%,
+  22%,
+  24%,
+  55% {
     opacity: 0.7;
     text-shadow: none;
   }
@@ -201,6 +214,11 @@ a.comments-link:focus {
   animation: flicker 1.5s infinite;
   outline: none;
 }
+
+
+
+
+
 
 /* Мобильная адаптивность */
 @media (max-width: 768px) {
@@ -275,4 +293,3 @@ a.comments-link:focus {
     justify-content: center;
   }
 }
-

@@ -18,7 +18,7 @@ if (!$user || !$user['is_admin']) {
 
 // Обработка удаления вопроса
 if (isset($_GET['delete_question'])) {
-    $id = (int)$_GET['delete_question'];
+    $id = (int) $_GET['delete_question'];
     // Удаляем сначала комментарии к вопросу
     $stmt = $pdo->prepare("DELETE FROM comments WHERE question_id = ?");
     $stmt->execute([$id]);
@@ -31,32 +31,47 @@ if (isset($_GET['delete_question'])) {
 
 // Обработка удаления комментария
 if (isset($_GET['delete_comment'])) {
-    $id = (int)$_GET['delete_comment'];
+    $id = (int) $_GET['delete_comment'];
     $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
     $stmt->execute([$id]);
     header('Location: admin.php');
     exit;
 }
 
-// Получаем список вопросов с количеством комментариев
+// Получаем список вопросов с количеством комментариев, категорией и подкатегорией
 $stmt = $pdo->query("
     SELECT q.id, q.title, q.created_at, u.username,
-    (SELECT COUNT(*) FROM comments c WHERE c.question_id = q.id) AS comments_count
+           c.name AS category_name,
+           sc.name AS subcategory_name,
+           (SELECT COUNT(*) FROM comments c2 WHERE c2.question_id = q.id) AS comments_count
     FROM questions q
     JOIN users u ON q.user_id = u.id
+    LEFT JOIN categories c ON q.category_id = c.id
+    LEFT JOIN subcategories sc ON q.subcategory_id = sc.id
     ORDER BY q.created_at DESC
 ");
 $questions = $stmt->fetchAll();
-
 ?>
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8" />
     <title>Админ-панель</title>
     <link rel="stylesheet" href="styles-admin.css">
+
+    <style>
+        td {
+            max-width: 25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+
 </head>
+
 <body>
     <h1>Админ-панель</h1>
     <p><a href="../public/index.php">На главную</a> | <a href="../public/logout.php">Выйти</a></p>
@@ -69,25 +84,32 @@ $questions = $stmt->fetchAll();
                 <th>Заголовок</th>
                 <th>Автор</th>
                 <th>Дата создания</th>
+                <th>Категория</th>
+                <th>Подкатегория</th>
                 <th>Комментариев</th>
                 <th>Действия</th>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($questions as $q): ?>
-            <tr>
-                <td><?= $q['id'] ?></td>
-                <td><a href="../public/question.php?id=<?= $q['id'] ?>" target="_blank"><?= htmlspecialchars($q['title']) ?></a></td>
-                <td><?= htmlspecialchars($q['username']) ?></td>
-                <td><?= $q['created_at'] ?></td>
-                <td><?= $q['comments_count'] ?></td>
-                <td>
-                    <a href="admin.php?delete_question=<?= $q['id'] ?>" class="delete" onclick="return confirm('Удалить вопрос и все его комментарии?');">Удалить</a> |
-                    <a href="admin_comments.php?question_id=<?= $q['id'] ?>">Комментарии</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
+            <?php foreach ($questions as $q): ?>
+                <tr>
+                    <td><?= $q['id'] ?></td>
+                    <td><a href="../public/question.php?id=<?= $q['id'] ?>"
+                            target="_blank"><?= htmlspecialchars($q['title']) ?></a></td>
+                    <td><?= htmlspecialchars($q['username']) ?></td>
+                    <td><?= $q['created_at'] ?></td>
+                    <td><?= htmlspecialchars($q['category_name'] ?? '-') ?></td>
+                    <td><?= htmlspecialchars($q['subcategory_name'] ?? '-') ?></td>
+                    <td><?= $q['comments_count'] ?></td>
+                    <td>
+                        <a href="admin.php?delete_question=<?= $q['id'] ?>" class="delete"
+                            onclick="return confirm('Удалить вопрос и все его комментарии?');">Удалить</a> |
+                        <a href="admin_comments.php?question_id=<?= $q['id'] ?>">Комментарии</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </body>
+
 </html>
