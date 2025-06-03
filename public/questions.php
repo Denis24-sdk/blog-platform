@@ -6,16 +6,49 @@ if (!is_logged_in()) {
   exit;
 }
 
-// Получаем все вопросы с именами авторов
-$stmt = $pdo->query("
-  SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username
+$selectedCategory = isset($_GET['category']) ? (int) $_GET['category'] : null;
+$selectedSubcategory = isset($_GET['subcategory']) ? (int) $_GET['subcategory'] : null;
+
+// Получаем все категории
+$categoriesStmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
+$categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Получаем подкатегории для всех категорий
+$subcategoriesStmt = $pdo->query("SELECT id, category_id, name FROM subcategories ORDER BY name");
+$allSubcategories = $subcategoriesStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Формируем WHERE для фильтрации вопросов
+$where = [];
+$params = [];
+
+if ($selectedCategory) {
+  $where[] = "q.category_id = :category_id";
+  $params[':category_id'] = $selectedCategory;
+}
+if ($selectedSubcategory) {
+  $where[] = "q.subcategory_id = :subcategory_id";
+  $params[':subcategory_id'] = $selectedSubcategory;
+}
+
+$whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+// Получаем вопросы с фильтрацией
+$sql = "
+  SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username,
+         c.name AS category_name, s.name AS subcategory_name
   FROM questions q
   JOIN users u ON q.user_id = u.id
+  JOIN categories c ON q.category_id = c.id
+  LEFT JOIN subcategories s ON q.subcategory_id = s.id
+  $whereSql
   ORDER BY q.created_at DESC
-");
+";
 
-$questions = $stmt->fetchAll();
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -23,12 +56,68 @@ $questions = $stmt->fetchAll();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
-  <link rel="stylesheet" href="..\styles\questions.css">
+  <link rel="stylesheet" href="../styles/questions.css" />
+  <style>
+    /* стили для фильтров */
+    .filters {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .filters-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .filters select {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #2a2a40;
+      color: #e0e7ff;
+      font-size: 1rem;
+      min-width: 180px;
+    }
+
+    .btn-compleat-filters {
+      padding:6px 18px; 
+      border-radius:8px; 
+      cursor:pointer;
+      max-width: 100px;
+    }
+
+  </style>
 </head>
 
 <body>
   <div class="container-recommend">
     <h2>Вопросы</h2>
+
+    <form method="GET" class="filters" id="filtersForm">
+      <div class="filters-row">
+        <select name="category" id="category" autocomplete="off">
+          <option value="">-- Все категории --</option>
+          <?php foreach ($categories as $cat): ?>
+            <option value="<?= $cat['id'] ?>" <?= $selectedCategory == $cat['id'] ? 'selected' : '' ?>>
+              <?= htmlspecialchars($cat['name']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="filters-row">
+        <select name="subcategory" id="subcategory" autocomplete="off" style="display:none;">
+          <option value="">-- Все подкатегории --</option>
+          <!-- Опции будут добавлены скриптом -->
+        </select>
+      </div>
+
+      <button type="submit" class="btn-compleat-filters">Применить</button>
+    </form>
+
     <?php if (empty($questions)): ?>
       <p>Пока нет вопросов. Будьте первым!</p>
     <?php else: ?>
@@ -37,7 +126,11 @@ $questions = $stmt->fetchAll();
           <a href="question.php?id=<?= $q['id'] ?>" class="question-link" tabindex="0">
             <div class="question">
               <h3><?= htmlspecialchars($q['title']) ?></h3>
-              <div class="author">Автор: <?= htmlspecialchars($q['username']) ?>, <?= htmlspecialchars($q['created_at']) ?>
+              <div class="author">
+                Автор: <?= htmlspecialchars($q['username']) ?>,
+                <?= htmlspecialchars($q['created_at']) ?><br>
+                <small>Категория: <?= htmlspecialchars($q['category_name']) ?>
+                  <?= $q['subcategory_name'] ? ' / ' . htmlspecialchars($q['subcategory_name']) : '' ?></small>
               </div>
               <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
 
@@ -59,8 +152,66 @@ $questions = $stmt->fetchAll();
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
+
     <p><a href="index.php" class="btn-secondary">← Назад</a></p>
   </div>
+
+  <script>
+    // Подкатегории из PHP в JS
+    const allSubcategories = <?= json_encode($allSubcategories, JSON_UNESCAPED_UNICODE) ?>;
+    const selectedCategory = <?= json_encode($selectedCategory) ?>;
+    const selectedSubcategory = <?= json_encode($selectedSubcategory) ?>;
+
+    const categorySelect = document.getElementById('category');
+    const subcategorySelect = document.getElementById('subcategory');
+    const subcategoryLabel = document.getElementById('subcategory-label');
+
+    function updateSubcategories() {
+      const catId = categorySelect.value;
+      // Очистить подкатегории
+      subcategorySelect.innerHTML = '<option value="">-- Все подкатегории --</option>';
+
+      if (!catId) {
+        subcategorySelect.style.display = 'none';
+        subcategoryLabel.style.display = 'none';
+        subcategorySelect.value = '';
+        return;
+      }
+
+      // Фильтруем подкатегории для выбранной категории
+      const filteredSubs = allSubcategories.filter(s => s.category_id == catId);
+
+      if (filteredSubs.length === 0) {
+        subcategorySelect.style.display = 'none';
+        subcategoryLabel.style.display = 'none';
+        subcategorySelect.value = '';
+        return;
+      }
+
+      // Добавляем опции
+      filteredSubs.forEach(sub => {
+        const option = document.createElement('option');
+        option.value = sub.id;
+        option.textContent = sub.name;
+        if (selectedSubcategory && selectedSubcategory == sub.id) {
+          option.selected = true;
+        }
+        subcategorySelect.appendChild(option);
+      });
+
+      subcategorySelect.style.display = 'inline-block';
+      subcategoryLabel.style.display = 'inline-block';
+    }
+
+    categorySelect.addEventListener('change', () => {
+      // При смене категории сбрасываем подкатегорию
+      subcategorySelect.value = '';
+      updateSubcategories();
+    });
+
+    // Инициализация при загрузке страницы
+    updateSubcategories();
+  </script>
 </body>
 
 </html>
