@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <title>Задать вопрос - Форум</title>
-  <link rel="stylesheet" href="../styles/ask.css">
+  <link rel="stylesheet" href="styles/ask.css">
 
   <style>
 

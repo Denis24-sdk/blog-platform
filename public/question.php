@@ -62,7 +62,7 @@ $comments = $stmt->fetchAll();
 <head>
   <meta charset="UTF-8" />
   <title><?= htmlspecialchars($question['title']) ?></title>
-  <link rel="stylesheet" href="..\styles\question.css">
+  <link rel="stylesheet" href="styles\question.css">
 </head>
 
 <body>

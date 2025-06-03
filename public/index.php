@@ -13,7 +13,7 @@ $username = get_username($pdo, $_SESSION['user_id']);
 <head>
   <meta charset="UTF-8" />
   <title>Форум - Главная</title>
-  <link rel="stylesheet" href="..\styles\index.css">
+  <link rel="stylesheet" href="styles\index.css">
 </head>
 
 <body>

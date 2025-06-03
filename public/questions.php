@@ -35,7 +35,8 @@ $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 // Получаем вопросы с фильтрацией
 $sql = "
   SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username,
-         c.name AS category_name, s.name AS subcategory_name
+         c.name AS category_name, s.name AS subcategory_name,
+         (SELECT COUNT(*) FROM comments cm WHERE cm.question_id = q.id) AS comments_count
   FROM questions q
   JOIN users u ON q.user_id = u.id
   JOIN categories c ON q.category_id = c.id
@@ -43,6 +44,7 @@ $sql = "
   $whereSql
   ORDER BY q.created_at DESC
 ";
+
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
@@ -56,7 +58,7 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
-  <link rel="stylesheet" href="../styles/questions.css" />
+  <link rel="stylesheet" href="styles/questions.css" />
   <style>
     /* стили для фильтров */
     .filters {
@@ -83,18 +85,29 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     .btn-compleat-filters {
-      padding:6px 18px; 
-      border-radius:8px; 
-      cursor:pointer;
+      padding: 6px 18px;
+      border-radius: 18px;
+      cursor: pointer;
       max-width: 100px;
+      background: rgba(93, 117, 189, 0.7);
+      color: #e0e7ff;
+      border: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
 
+    .btn-compleat-filters:hover,
+    .btn-compleat-filters:focus {
+      background: rgba(94, 120, 179, 0.9);
+      box-shadow: 0 8px 24px rgba(29, 44, 88, 0.8);
+      outline: none;
+    }
   </style>
 </head>
 
 <body>
   <div class="container-recommend">
-    <h2>Вопросы</h2>
+    <h2 style="margin-top: -0.5rem;">Вопросы</h2>
 
     <form method="GET" class="filters" id="filtersForm">
       <div class="filters-row">
@@ -127,11 +140,15 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="question">
               <h3><?= htmlspecialchars($q['title']) ?></h3>
               <div class="author">
-                Автор: <?= htmlspecialchars($q['username']) ?>,
+                <?= htmlspecialchars($q['username']) ?>,
                 <?= htmlspecialchars($q['created_at']) ?><br>
-                <small>Категория: <?= htmlspecialchars($q['category_name']) ?>
-                  <?= $q['subcategory_name'] ? ' / ' . htmlspecialchars($q['subcategory_name']) : '' ?></small>
+                <small>
+                  <?= htmlspecialchars($q['category_name']) ?>
+                  <?= $q['subcategory_name'] ? ' / ' . htmlspecialchars($q['subcategory_name']) : '' ?>
+                </small><br>
+                <small style="color: rgb(106, 125, 162);">Комментарии: <?= $q['comments_count'] ?></small>
               </div>
+
               <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
 
               <?php if ($q['user_id'] == $_SESSION['user_id']): ?>

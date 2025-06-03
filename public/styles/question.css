@@ -20,11 +20,11 @@
  }
 
  .body {
-     font-size: 1.2rem;
-     white-space: pre-wrap;
+     font-size: 1.3rem;
      line-height: 1.4;
-     color: rgb(203, 203, 203);
-     margin-bottom: 40px;
+     white-space: pre-wrap;
+     color: rgb(231, 231, 231);
+     margin-bottom: 70px;
  }
 
  a.back-link {
@@ -39,9 +39,26 @@
  }
 
  /* Комментарии */
- .comments {
-     margin-top: 70px;
- }
+.comments {
+    border-top: 2px solid #5e78b3;
+    border-left: 2px solid #5e78b3;
+    border-right: 2px solid #5e78b3;
+    border-bottom: 2px solid #5e78b3;
+    border-radius: 25px;
+
+    background: rgba(93, 117, 189, 0.14);
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(29, 44, 88, 0.4);
+
+    max-width: 950px;
+    margin: 0 auto  /* по горизонтали центрируем */;
+    
+    /* Позволяем блоку расти по высоте без ограничения */
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
+}
+
 
  .comments h2 {
      font-size: 1.8rem;
@@ -74,9 +91,9 @@
 
  .comment .text {
      white-space: pre-wrap;
-     color: rgb(203, 203, 203);
-     font-size: 1.1rem;
-     line-height: 1.3;
+     color: rgb(197, 197, 197);
+     font-size: 1.2rem;
+     line-height: 1.2;
  }
 
  /* Форма комментария */

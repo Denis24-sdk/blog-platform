@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Регистрация</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="..\styles\register.css">
+    <link rel="stylesheet" href="styles\register.css">
 </head>
 
 <body>
