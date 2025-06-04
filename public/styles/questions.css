@@ -119,32 +119,10 @@ form {
     align-self: flex-start;
 }
 
-.btn-delete {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #c94c4c;
-    border: none;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    user-select: none;
-}
-
 .btn-delete svg {
     width: 16px;
     height: 16px;
     fill: currentColor;
-}
-
-.btn-delete:hover,
-.btn-delete:focus {
-    background: #e06a6a;
-    transform: translateY(-2px);
-    outline: none;
 }
 
 /* Ссылка назад */
@@ -163,6 +141,8 @@ a.btn-secondary:focus {
     text-decoration: underline;
     outline: none;
 }
+
+
 
 /* Адаптивность */
 @media (max-width: 480px) {

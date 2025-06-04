@@ -144,9 +144,9 @@
  }
 
  .btn-delete-comment {
-     background: #c94c4c;
+     background: #c94c4cb7;
      border: none;
-     color: #fff;
+     color: #ffffffb9;
      padding: 6px 14px;
      border-radius: 8px;
      font-size: 0.9rem;
@@ -154,6 +154,9 @@
      transition: background-color 0.3s ease;
  }
 
- .btn-delete-comment:hover {
-     background: #e06a6a;
- }
+.btn-delete-comment:hover,
+.btn-delete-comment:focus {
+    background: #e06a6a;
+    transform: translateY(-2px);
+    outline: none;
+}

@@ -102,6 +102,30 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       box-shadow: 0 8px 24px rgba(29, 44, 88, 0.8);
       outline: none;
     }
+
+
+
+    .btn-delete {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #c94c4cb7;
+      border: none;
+      color: #ffffffb9;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .btn-delete:hover,
+    .btn-delete:focus {
+      background: #e06a6a;
+      transform: translateY(-2px);
+      outline: none;
+    }
   </style>
 </head>
 
