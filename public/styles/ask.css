@@ -1,163 +1,221 @@
+/* --- Общие стили --- */
 body {
-    max-width: 900px;
-    margin: 30px auto;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-        'Helvetica Neue', Arial, sans-serif;
-    color: #e0e7ff;
-    background: #1e1e2f;
-    padding: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Arial, sans-serif;
+  color: #f0f4ff;
+  background: #121426;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: text;
+  line-height: 1.6;
 }
 
+/* Контейнер формы */
 .container {
-    background: rgba(93, 117, 189, 0.14);
-    border-radius: 18px;
-    padding: 40px 50px;
-    box-shadow: 0 6px 20px rgba(29, 44, 88, 0.5);
-    width: 100%;
-    max-width: 600px;
-    user-select: none;
-
-    transform: scale(0.8);
-    transform-origin: center;
+  background: #1f2233;
+  border-radius: 12px;
+  padding: 40px 50px;
+  box-shadow:
+    0 0 0 1px #444eaa,
+    0 10px 30px rgba(70, 80, 160, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  user-select: none;
 }
 
+/* Заголовок */
 h2 {
-    font-size: 2.5rem;
-    margin-bottom: 24px;
-    text-shadow: 0 0 5px rgba(119, 158, 255, 0.7);
-    color: rgb(212, 224, 255);
-    text-align: center;
+  color: #aabfff;
+  margin-bottom: 24px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 1.9rem;
+  border-bottom: 2px solid #5a66cc;
+  padding-bottom: 6px;
+  text-shadow: none;
+  margin-top: 0;
+  text-align: center;
 }
 
+/* Сообщение об ошибке */
 .message {
-    background: rgba(201, 76, 76, 0.2);
-    color: #fbb6b6;
-    border-radius: 12px;
-    padding: 12px 18px;
-    margin-bottom: 24px;
-    font-weight: 600;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(201, 76, 76, 0.4);
+  background: rgba(255, 76, 76, 0.2);
+  color: #ffb6b6;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(255, 76, 76, 0.4);
+  user-select: text;
 }
 
+/* Метки полей */
 form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: rgb(180, 190, 255);
-    user-select: text;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #b0bbff;
+  user-select: text;
 }
 
-.textarea-text {
-    padding: 30px 18px;
-}
 
+
+/* Текстовые поля и textarea */
 input[type="text"],
 textarea {
-    width: 100%;
-    padding: 14px 18px;
-    border-radius: 12px;
-    border: none;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #1e293b;
-    background: rgba(240, 244, 255, 0.54);
-    box-shadow:
-        inset 2px 2px 6pxrgb(0, 0, 0),
-        inset -2px -2px 6pxrgb(0, 0, 0);
-    resize: vertical;
-    transition:
-        background-color 0.3s ease,
-        box-shadow 0.3s ease;
-    margin-bottom: 24px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #444eaa;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #f0f4ff;
+  background: #2a2e4a;
+  box-shadow:
+    inset 0 0 8px #5062ff88;
+  resize: vertical;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  margin-bottom: 28px;
+  box-sizing: border-box;
+  font-family: inherit;
+  min-height: 50px;
 }
 
+textarea {
+    min-height: 220px;
+}
+
+/* Placeholder */
+textarea::placeholder,
+input::placeholder {
+  color: #8693b0;
+  opacity: 1;
+  font-style: italic;
+}
+
+/* Фокус на полях */
 input[type="text"]:focus,
 textarea:focus {
-    outline: none;
-    background: rgba(224, 231, 255, 0.69);
-    box-shadow:
-        0 0 8px 3px #7c3aed,
-        inset 2px 2px 6px #b0b8ff,
-        inset -2px -2px 6px #ffffff;
-    color: #1e293b;
+  outline: none;
+  border-color: #5a66cc;
+  background: #38417a;
+  box-shadow:
+    0 0 12px 3px #7a8affcc,
+    inset 0 0 12px #7a8affcc;
+  color: #f0f4ff;
 }
 
+
+
+/* Выпадающие списки */
+.filters select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #444eaa;
+  background: #2a2e4a;
+  color: #cbd6ff;
+  font-size: 1rem;
+  box-shadow:
+    inset 0 0 8px #5062ff88;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  min-width: 180px;
+  cursor: pointer;
+}
+
+.filters select:focus {
+  outline: none;
+  border-color: #5a66cc;
+  background: #38417a;
+  box-shadow:
+    0 0 12px 3px #7a8affcc,
+    inset 0 0 12px #7a8affcc;
+}
+
+/* Флекс контейнер для фильтров */
+.filters {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filters-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Кнопка отправки */
 button[type="submit"] {
-    background: rgba(93, 117, 189, 0.7);
-    color: #e0e7ff;
-    padding: 14px 28px;
-    border-radius: 18px;
-    font-weight: 700;
-    font-size: 1.15rem;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(29, 44, 88, 0.5);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-    width: 100%;
+  background: #5062ff;
+  color: #f0f4ff;
+  padding: 16px 32px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 8px #7a8affcc,
+    0 6px 18px #7a8affcc;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  width: 100%;
+  margin-top: 12px;
 }
 
 button[type="submit"]:hover,
 button[type="submit"]:focus {
-    background: rgba(94, 120, 179, 0.9);
-    box-shadow: 0 8px 24px rgba(29, 44, 88, 0.8);
-    outline: none;
+  background: #7a8aff;
+  box-shadow:
+    inset 0 0 12px #aabfffcc,
+    0 8px 24px #aabfffcc;
+  outline: none;
 }
 
-p a.btn-secondary {
-    display: inline-block;
-    margin-top: 30px;
-    color: #6ea0ff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    user-select: none;
-    transition: color 0.3s ease;
-    text-align: center;
-}
 
-p a.btn-secondary:hover,
-p a.btn-secondary:focus {
-    text-decoration: underline;
-    color: #a3b8ff;
-    outline: none;
-}
 
 /* Адаптивность */
-@media (max-width: 480px) {
-    body {
-        padding: 12px;
-    }
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+  }
 
-    .container {
-        padding: 30px 25px;
-    }
+  .filters-row {
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    h2 {
-        font-size: 2rem;
-    }
+  .container {
+    padding: 30px 25px;
+    max-width: 100%;
+  }
 
-    input[type="text"],
-    textarea {
-        font-size: 0.95rem;
-        padding: 12px 16px;
-        margin-bottom: 20px;
-    }
+  h2 {
+    font-size: 1.6rem;
+  }
 
-    button[type="submit"] {
-        font-size: 1rem;
-        padding: 12px 24px;
-    }
+  input[type="text"],
+  textarea {
+    font-size: 1rem;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+  }
 
-    p a.btn-secondary {
-        font-size: 1rem;
-    }
+  button[type="submit"] {
+    font-size: 1rem;
+    padding: 14px 24px;
+  }
+
+  p a.btn-secondary {
+    font-size: 1rem;
+  }
 }
+

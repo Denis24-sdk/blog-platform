@@ -38,36 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Задать вопрос - Форум</title>
   <link rel="stylesheet" href="styles/ask.css">
 
-  <style>
-    /* стили для фильтров */
-    .filters {
-      margin-bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .filters-row {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .filters select {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #2a2a40;
-      color: #e0e7ff;
-      font-size: 1rem;
-      min-width: 180px;
-    }
-
-    #subcategory_id {
-      margin-bottom: 0.8rem;
-    }
-  </style>
-
   <script>
     // JS для динамического обновления подкатегорий
     document.addEventListener('DOMContentLoaded', function () {
@@ -149,7 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit">Отправить</button>
     </form>
-    <p><a href="index.php" class="btn-secondary">Назад</a></p>
   </div>
 
 </body>

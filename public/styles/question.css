@@ -1,169 +1,255 @@
- body {
-     max-width: 900px;
-     margin: 30px auto;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     color: #e0e7ff;
-     background: #1e1e2f;
-     padding: 20px;
- }
+/* --- Общие стили --- */
+body {
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Arial, sans-serif;
+  color: #f0f4ff;
+  background: #121426;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: text;
+}
 
- h1 {
-     font-size: 2.5rem;
-     margin-bottom: 10px;
-     text-shadow: 0 0 5px rgba(119, 158, 255, 0.7);
- }
+/* Ссылка назад */
+a.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #5a66cc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease, transform 0.25s ease;
+  cursor: pointer;
+}
+a.back-link:hover,
+a.back-link:focus {
+  color: #aabfff;
+  text-decoration: underline;
+  outline: none;
+  transform: translateX(-3px);
+}
 
- .meta {
-     font-style: italic;
-     color: rgb(144, 170, 224);
-     margin-bottom: 20px;
- }
+/* Заголовок */
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #aabfff;
+  letter-spacing: 0.03em;
+  border-bottom: 2px solid #5a66cc;
+  padding-bottom: 12px;
+  text-align: center;
+}
 
- .body {
-     font-size: 1.3rem;
-     line-height: 1.4;
-     white-space: pre-wrap;
-     color: rgb(231, 231, 231);
-     margin-bottom: 70px;
- }
+/* Мета-информация */
+.meta {
+  font-style: normal;
+  color: #8fa8ffcc;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+  user-select: none;
+  text-align: center;
+}
 
- a.back-link {
-     display: inline-block;
-     margin-bottom: 20px;
-     color: #6ea0ff;
-     text-decoration: none;
- }
+/* Тело вопроса */
+.body {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #d0d8ff;
+  background: #2a2e4a;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow:
+    0 4px 12px #3b44a1cc;
+  margin-bottom: 60px;
+  user-select: text;
+  border: 1.5px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.body:hover,
+.body:focus-within {
+  border-color: #5a66cc;
+  box-shadow:
+    0 6px 20px #5a66ccdd;
+  outline: none;
+}
 
- a.back-link:hover {
-     text-decoration: underline;
- }
+/* Контейнер комментариев */
+.comments {
+  border-radius: 16px;
+  background: #1f2233;
+  padding: 28px 36px;
+  box-shadow:
+    0 0 0 1px #444eaa,
+    0 10px 30px rgba(70, 80, 160, 0.7);
+  max-width: 950px;
+  margin: 0 auto 80px;
+  user-select: none;
+}
 
- /* Комментарии */
- .comments {
-     border-top: 2px solid #5e78b3;
-     border-left: 2px solid #5e78b3;
-     border-right: 2px solid #5e78b3;
-     border-bottom: 2px solid #5e78b3;
-     border-radius: 25px;
+/* Заголовок комментариев */
+.comments h2 {
+  font-size: 1.9rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #aabfff;
+  border-bottom: 2px solid #5a66cc;
+  padding-bottom: 8px;
+}
 
-     background: rgba(93, 117, 189, 0.14);
-     padding: 16px 20px;
-     box-shadow: 0 4px 12px rgba(29, 44, 88, 0.4);
+/* Отдельный комментарий */
+.comment {
+  background: #2a2e4a;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+  box-shadow:
+    0 4px 12px #3b44a1cc;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+  border: 1.5px solid transparent;
+}
+.comment:nth-child(1) { animation-delay: 0.1s; }
+.comment:nth-child(2) { animation-delay: 0.2s; }
+.comment:nth-child(3) { animation-delay: 0.3s; }
+.comment:hover,
+.comment:focus-within {
+  background: #38417a;
+  box-shadow:
+    0 6px 20px #5a66ccdd;
+  border-color: #5a66cc;
+  outline: none;
+}
 
-     max-width: 950px;
-     margin: 0 auto
-         /* по горизонтали центрируем */
-     ;
+.comment .author {
+  font-weight: 700;
+  color: #7a8aff;
+  margin-bottom: 6px;
+  font-style: normal;
+  font-size: 1rem;
+}
 
-     /* Позволяем блоку расти по высоте без ограничения */
-     height: auto;
-     max-height: none;
-     overflow-y: visible;
- }
+.comment .date {
+  font-size: 0.85rem;
+  color: #8693b0;
+  margin-bottom: 12px;
+  user-select: none;
+}
 
+.comment .text {
+  white-space: pre-wrap;
+  color: #cbd6ff;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
 
- .comments h2 {
-     font-size: 1.8rem;
-     margin-bottom: 20px;
-     color: #a0b9ff;
-     text-shadow: 0 0 3px rgba(119, 158, 255, 0.7);
- }
+/* Кнопка удаления комментария */
+.btn-delete-comment {
+  background: #5062ff67;
+  border: none;
+  color: #f0f4ff;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  margin-top: 8px;
+  box-shadow:
+    0 4px 12px rgba(80, 98, 255, 0.291);
+  font-weight: 600;
+}
+.btn-delete-comment:hover,
+.btn-delete-comment:focus {
+  background: #6678fb;
+  transform: translateY(-1px);
+  outline: none;
+  box-shadow:
+    0 6px 18px rgba(122, 138, 255, 0.9);
+}
 
- .comment {
-     background: rgba(93, 117, 189, 0.14);
-     border-radius: 12px;
-     padding: 16px 20px;
-     margin-bottom: 15px;
-     box-shadow: 0 4px 12px rgba(29, 44, 88, 0.4);
- }
+/* Форма добавления комментария */
+form.comment-form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
 
- .comment .author {
-     font-weight: 700;
-     color: rgb(144, 170, 224);
-     margin-bottom: 6px;
-     font-style: italic;
-     font-size: 1rem;
- }
+form.comment-form textarea {
+  resize: vertical;
+  min-height: 120px;
+  padding: 18px 20px;
+  font-size: 1.15rem;
+  border-radius: 14px;
+  border: 1.5px solid #5062ff;
+  background: #2a2e4a;
+  color: #cbd6ff;
+  font-family: inherit;
+  margin-bottom: 18px;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    inset 0 0 8px #5062ff88;
+  user-select: text;
+}
 
- .comment .date {
-     font-size: 0.85rem;
-     color: #8899cc;
-     margin-bottom: 8px;
- }
+form.comment-form textarea::placeholder {
+  color: #8693b0;
+  opacity: 1;
+  font-style: italic;
+}
 
- .comment .text {
-     white-space: pre-wrap;
-     color: rgb(197, 197, 197);
-     font-size: 1.2rem;
-     line-height: 1.2;
- }
+form.comment-form textarea:focus {
+  outline: none;
+  border-color: #7a8aff;
+  background: #38417a;
+  box-shadow:
+    0 0 12px #7a8affcc;
+}
 
- /* Форма комментария */
- form.comment-form {
-     margin-top: 30px;
-     display: flex;
-     flex-direction: column;
- }
+form.comment-form button {
+  align-self: flex-start;
+  padding: 12px 30px;
+  font-size: 1.15rem;
+  border-radius: 14px;
+  border: none;
+  background: #5a66cc;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow:
+    0 6px 12px rgba(90, 102, 204, 0.7);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+form.comment-form button:hover {
+  background: #7a8aff;
+  box-shadow:
+    0 8px 20px rgba(122, 138, 255, 0.9);
+}
 
- form.comment-form textarea {
-     resize: vertical;
-     min-height: 100px;
-     padding: 12px;
-     font-size: 1.1rem;
-     border-radius: 8px;
-     border: none;
-     background: rgba(93, 117, 189, 0.2);
-     color: #e0e7ff;
-     font-family: inherit;
-     margin-bottom: 12px;
- }
+/* Ошибка */
+.error {
+  color: #f56262;
+  margin-bottom: 18px;
+  font-weight: 700;
+  font-size: 1rem;
+  user-select: none;
+  text-align: center;
+}
 
- form.comment-form textarea:focus {
-     outline: 2px solid #5e78b3;
-     background: rgba(93, 117, 189, 0.35);
- }
+/* Убираем масштаб */
+.main-contant-question {
+  transform: none;
+  margin-bottom: 60px;
+}
 
- form.comment-form button {
-     align-self: flex-start;
-     padding: 10px 24px;
-     font-size: 1.1rem;
-     border-radius: 8px;
-     border: none;
-     background: #5e78b3;
-     color: #e0e7ff;
-     cursor: pointer;
-     transition: background-color 0.3s ease;
- }
+/* --- Анимация появления --- */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
- form.comment-form button:hover {
-     background: #7a92d1;
- }
-
- .error {
-     color: #ff6666;
-     margin-bottom: 12px;
-     font-weight: 600;
- }
-
- .btn-delete-comment {
-     background: #c94c4cb7;
-     border: none;
-     color: #ffffffb9;
-     padding: 6px 14px;
-     border-radius: 8px;
-     font-size: 0.9rem;
-     cursor: pointer;
-     transition: background-color 0.3s ease;
- }
-
- .btn-delete-comment:hover,
- .btn-delete-comment:focus {
-     background: #e06a6a;
-     transform: translateY(-2px);
-     outline: none;
- }
-
- .main-contant-question {
-     transform: scale(0.8);
-     transform-origin: center;
- }

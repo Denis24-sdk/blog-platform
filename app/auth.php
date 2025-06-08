@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 
-function registerUser($username, $email, $password) {
+function registerUser($username, $email, $password)
+{
     global $pdo;
 
     // Проверяем, есть ли такой username или email
@@ -23,7 +24,8 @@ function registerUser($username, $email, $password) {
     }
 }
 
-function loginUser($username, $password) {
+function loginUser($username, $password)
+{
     global $pdo;
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
@@ -39,11 +41,35 @@ function loginUser($username, $password) {
     return false;
 }
 
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_id']);
 }
 
-function logout() {
+function logout()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Очистить все данные сессии
+    $_SESSION = [];
+
+    // Удалить cookie сессии, если используется
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
+    }
+
+    // Уничтожить сессию
     session_destroy();
 }
 

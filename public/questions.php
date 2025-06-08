@@ -55,71 +55,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <title>Рекомендации - Форум</title>
   <link rel="stylesheet" href="styles/questions.css" />
 
-  <style>
-    .filters {
-      margin-bottom: 19.2px;
-      display: flex;
-      flex-direction: column;
-      gap: 12.8px;
-    }
-
-    .filters-row {
-      display: flex;
-      gap: 12.8px;
-      align-items: center;
-    }
-
-    .filters select {
-      padding: 4.8px 9.6px;
-      border-radius: 6.4px;
-      border: 1px solid #ccc;
-      background: #2a2a40;
-      color: #e0e7ff;
-      font-size: 0.8rem;
-      min-width: 144px;
-    }
-
-    .btn-compleat-filters {
-      padding: 4.8px 14.4px;
-      border-radius: 14.4px;
-      cursor: pointer;
-      max-width: 80px;
-      background: rgba(93, 117, 189, 0.7);
-      color: #e0e7ff;
-      border: none;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-
-    .btn-compleat-filters:hover,
-    .btn-compleat-filters:focus {
-      background: rgba(94, 120, 179, 0.9);
-      box-shadow: 0 6.4px 19.2px rgba(29, 44, 88, 0.8);
-      outline: none;
-    }
-
-    .btn-delete {
-      display: flex;
-      align-items: center;
-      gap: 6.4px;
-      background: #c94c4cb7;
-      border: none;
-      color: #ffffffb9;
-      padding: 6.4px 12.8px;
-      border-radius: 6.4px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-
-    .btn-delete:hover,
-    .btn-delete:focus {
-      background: #e06a6a;
-      transform: translateY(-1.6px);
-      outline: none;
-    }
-  </style>
 </head>
 
 <body>
@@ -187,7 +122,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
     <?php endif; ?>
 
-    <p><a href="index.php" class="btn-secondary">← Назад</a></p>
   </div>
 
   <script>
