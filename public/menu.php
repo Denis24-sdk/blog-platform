@@ -136,10 +136,11 @@
     <div class="top-menu" id="topMenu" aria-expanded="false">
         <ul class="nav-links" id="navLinks">
             <li><a href="index.php"><i class='bx bx-grid-alt'></i><span class="link_name">Аккаунт</span></a></li>
-            <li><a href="questions.php"><i class='bx bx-briefcase'></i><span class="link_name">Сообщества</span></a>
+            <li><a href="questions.php"><i class='bx bx-briefcase'></i><span class="link_name">Форум</span></a>
             </li>
             <li><a href="ask.php"><i class='bx bx-task'></i><span class="link_name">Задать вопрос</span></a></li>
-            <li><a href=""><i class='bx bx-group'></i><span class="link_name">Турниры</span></a></li>
+            <li><a href="tournaments.php"><i class='bx bx-group'></i><span class="link_name">Турниры</span></a></li>
+            <li><a href="create_tournament.php"><i class='bx bx-group'></i><span class="link_name">Создать турнир</span></a></li>
         </ul>
         <button class="toggle-btn" id="toggleBtn" aria-label="Toggle menu" aria-expanded="false">
             <i class='bx bx-chevron-down'></i>

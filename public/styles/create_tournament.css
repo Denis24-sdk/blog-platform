@@ -1,0 +1,300 @@
+/* --- Общие стили --- */
+body {
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Arial, sans-serif;
+  color: #f0f4ff;
+  background: #121426;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: text;
+  line-height: 1.6;
+}
+
+/* Контейнер */
+.container {
+  background: #1f2233;
+  border-radius: 12px;
+  padding: 40px 50px;
+  box-shadow:
+    0 0 0 1px #444eaa,
+    0 10px 30px rgba(70, 80, 160, 0.7);
+  max-width: 900px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+/* Заголовок */
+h1, h2 {
+  color: #aabfff;
+  margin-bottom: 24px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 1.9rem;
+  border-bottom: 2px solid #5a66cc;
+  padding-bottom: 6px;
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Таблица */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  font-size: 1rem;
+  color: #cbd6ff;
+}
+
+th, td {
+  padding: 12px 20px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: #8693b0;
+  font-weight: 600;
+  border-bottom: 2px solid #444eaa;
+}
+
+tbody tr {
+  background: #2a2e4a;
+  border-radius: 12px;
+  box-shadow:
+    0 0 8px #5062ff88;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background: #38417a;
+  box-shadow:
+    0 0 12px 3px #7a8affcc,
+    inset 0 0 12px #7a8affcc;
+}
+
+td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Приз */
+.prize {
+  color: #d48806; /* золотистый акцент */
+  font-weight: 700;
+}
+
+/* Кнопки */
+button, .btn {
+  background: #5062ff;
+  color: #f0f4ff;
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 8px #7a8affcc,
+    0 6px 18px #7a8affcc;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+button:hover, button:focus,
+.btn:hover, .btn:focus {
+  background: #7a8aff;
+  box-shadow:
+    inset 0 0 12px #aabfffcc,
+    0 8px 24px #aabfffcc;
+  outline: none;
+}
+
+/* Сообщения */
+.message {
+  background: rgba(255, 76, 76, 0.2);
+  color: #ffb6b6;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(255, 76, 76, 0.4);
+  user-select: text;
+}
+
+/* Успех */
+.message.success {
+  background: rgba(75, 255, 105, 0.2);
+  color: #9fff9f;
+  box-shadow: 0 2px 12px rgba(75, 255, 105, 0.4);
+}
+
+/* --- Стили для input, textarea, select --- */
+
+/* Общие стили для всех input, textarea и select */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+textarea,
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #444eaa;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #f0f4ff;
+  background: #2a2e4a;
+  box-shadow:
+    inset 0 0 8px #5062ff88;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  margin-bottom: 28px;
+  box-sizing: border-box;
+  font-family: inherit;
+  user-select: text;
+  appearance: none; /* для select убрать дефолтный стрелочный стиль */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: text;
+}
+
+/* Для textarea увеличить минимальную высоту */
+textarea {
+  min-height: 220px;
+  resize: vertical;
+}
+
+/* Placeholder */
+textarea::placeholder,
+input::placeholder {
+  color: #8693b0;
+  opacity: 1;
+  font-style: italic;
+}
+
+/* Фокус на полях */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #5a66cc;
+  background: #38417a;
+  box-shadow:
+    0 0 12px 3px #7a8affcc,
+    inset 0 0 12px #7a8affcc;
+  color: #f0f4ff;
+  cursor: text;
+}
+
+/* Стрелка у select */
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #cbd6ff 50%),
+    linear-gradient(135deg, #cbd6ff 50%, transparent 50%),
+    linear-gradient(to right, #2a2e4a, #2a2e4a);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    100% 0;
+  background-size: 5px 5px, 5px 5px, 1px 1.5em;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* Адаптивность */
+@media (max-width: 700px) {
+  .container {
+    padding: 30px 25px;
+    max-width: 100%;
+  }
+
+  table, th, td {
+    font-size: 0.9rem;
+  }
+
+  button, .btn {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 1.1rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  textarea,
+  select {
+    font-size: 1rem;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+  }
+}
+
+
+
+.prize-label {
+  display: block;
+  margin-bottom: 28px;
+  cursor: pointer;
+  user-select: none;
+  color: #cbd6ff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Метки полей */
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #b0bbff; 
+}
+
+label .premium {
+    color: #ffc800;
+}
+
+
+
