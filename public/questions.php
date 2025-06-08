@@ -9,15 +9,12 @@ if (!is_logged_in()) {
 $selectedCategory = isset($_GET['category']) ? (int) $_GET['category'] : null;
 $selectedSubcategory = isset($_GET['subcategory']) ? (int) $_GET['subcategory'] : null;
 
-// Получаем все категории
 $categoriesStmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
 $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Получаем подкатегории для всех категорий
 $subcategoriesStmt = $pdo->query("SELECT id, category_id, name FROM subcategories ORDER BY name");
 $allSubcategories = $subcategoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Формируем WHERE для фильтрации вопросов
 $where = [];
 $params = [];
 
@@ -32,7 +29,6 @@ if ($selectedSubcategory) {
 
 $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
-// Получаем вопросы с фильтрацией
 $sql = "
   SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username,
          c.name AS category_name, s.name AS subcategory_name,
@@ -44,7 +40,6 @@ $sql = "
   $whereSql
   ORDER BY q.created_at DESC
 ";
-
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
@@ -59,36 +54,36 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
   <link rel="stylesheet" href="styles/questions.css" />
+
   <style>
-    /* стили для фильтров */
     .filters {
-      margin-bottom: 24px;
+      margin-bottom: 19.2px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12.8px;
     }
 
     .filters-row {
       display: flex;
-      gap: 16px;
+      gap: 12.8px;
       align-items: center;
     }
 
     .filters select {
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 4.8px 9.6px;
+      border-radius: 6.4px;
       border: 1px solid #ccc;
       background: #2a2a40;
       color: #e0e7ff;
-      font-size: 1rem;
-      min-width: 180px;
+      font-size: 0.8rem;
+      min-width: 144px;
     }
 
     .btn-compleat-filters {
-      padding: 6px 18px;
-      border-radius: 18px;
+      padding: 4.8px 14.4px;
+      border-radius: 14.4px;
       cursor: pointer;
-      max-width: 100px;
+      max-width: 80px;
       background: rgba(93, 117, 189, 0.7);
       color: #e0e7ff;
       border: none;
@@ -99,22 +94,20 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .btn-compleat-filters:hover,
     .btn-compleat-filters:focus {
       background: rgba(94, 120, 179, 0.9);
-      box-shadow: 0 8px 24px rgba(29, 44, 88, 0.8);
+      box-shadow: 0 6.4px 19.2px rgba(29, 44, 88, 0.8);
       outline: none;
     }
-
-
 
     .btn-delete {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6.4px;
       background: #c94c4cb7;
       border: none;
       color: #ffffffb9;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 6.4px 12.8px;
+      border-radius: 6.4px;
+      font-size: 0.8rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
       user-select: none;
@@ -123,15 +116,17 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .btn-delete:hover,
     .btn-delete:focus {
       background: #e06a6a;
-      transform: translateY(-2px);
+      transform: translateY(-1.6px);
       outline: none;
     }
   </style>
 </head>
 
 <body>
+  <?php include 'menu.php'; ?>
+
   <div class="container-recommend">
-    <h2 style="margin-top: -0.5rem;">Вопросы</h2>
+    <h2 style="margin-top: -0.4rem;">Вопросы</h2>
 
     <form method="GET" class="filters" id="filtersForm">
       <div class="filters-row">
@@ -148,7 +143,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <div class="filters-row">
         <select name="subcategory" id="subcategory" autocomplete="off" style="display:none;">
           <option value="">-- Все подкатегории --</option>
-          <!-- Опции будут добавлены скриптом -->
         </select>
       </div>
 
@@ -180,7 +174,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   tabindex="-1">
                   <input type="hidden" name="question_id" value="<?= $q['id'] ?>">
                   <button type="submit" class="btn-delete" aria-label="Удалить вопрос">
-                    <!-- Иконка корзины -->
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                       <path d="M3 6h18v2H3V6zm2 3h14l-1.5 12.5a1 1 0 01-1 .5H8a1 1 0 01-1-.5L5 9zm5 3v6h2v-6h-2z" />
                     </svg>
@@ -198,7 +191,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 
   <script>
-    // Подкатегории из PHP в JS
     const allSubcategories = <?= json_encode($allSubcategories, JSON_UNESCAPED_UNICODE) ?>;
     const selectedCategory = <?= json_encode($selectedCategory) ?>;
     const selectedSubcategory = <?= json_encode($selectedSubcategory) ?>;
@@ -209,27 +201,24 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     function updateSubcategories() {
       const catId = categorySelect.value;
-      // Очистить подкатегории
       subcategorySelect.innerHTML = '<option value="">-- Все подкатегории --</option>';
 
       if (!catId) {
         subcategorySelect.style.display = 'none';
-        subcategoryLabel.style.display = 'none';
+        if(subcategoryLabel) subcategoryLabel.style.display = 'none';
         subcategorySelect.value = '';
         return;
       }
 
-      // Фильтруем подкатегории для выбранной категории
       const filteredSubs = allSubcategories.filter(s => s.category_id == catId);
 
       if (filteredSubs.length === 0) {
         subcategorySelect.style.display = 'none';
-        subcategoryLabel.style.display = 'none';
+        if(subcategoryLabel) subcategoryLabel.style.display = 'none';
         subcategorySelect.value = '';
         return;
       }
 
-      // Добавляем опции
       filteredSubs.forEach(sub => {
         const option = document.createElement('option');
         option.value = sub.id;
@@ -241,18 +230,17 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       });
 
       subcategorySelect.style.display = 'inline-block';
-      subcategoryLabel.style.display = 'inline-block';
+      if(subcategoryLabel) subcategoryLabel.style.display = 'inline-block';
     }
 
     categorySelect.addEventListener('change', () => {
-      // При смене категории сбрасываем подкатегорию
       subcategorySelect.value = '';
       updateSubcategories();
     });
 
-    // Инициализация при загрузке страницы
     updateSubcategories();
   </script>
 </body>
 
 </html>
+

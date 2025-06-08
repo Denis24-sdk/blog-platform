@@ -39,25 +39,27 @@
  }
 
  /* Комментарии */
-.comments {
-    border-top: 2px solid #5e78b3;
-    border-left: 2px solid #5e78b3;
-    border-right: 2px solid #5e78b3;
-    border-bottom: 2px solid #5e78b3;
-    border-radius: 25px;
+ .comments {
+     border-top: 2px solid #5e78b3;
+     border-left: 2px solid #5e78b3;
+     border-right: 2px solid #5e78b3;
+     border-bottom: 2px solid #5e78b3;
+     border-radius: 25px;
 
-    background: rgba(93, 117, 189, 0.14);
-    padding: 16px 20px;
-    box-shadow: 0 4px 12px rgba(29, 44, 88, 0.4);
+     background: rgba(93, 117, 189, 0.14);
+     padding: 16px 20px;
+     box-shadow: 0 4px 12px rgba(29, 44, 88, 0.4);
 
-    max-width: 950px;
-    margin: 0 auto  /* по горизонтали центрируем */;
-    
-    /* Позволяем блоку расти по высоте без ограничения */
-    height: auto;
-    max-height: none;
-    overflow-y: visible;
-}
+     max-width: 950px;
+     margin: 0 auto
+         /* по горизонтали центрируем */
+     ;
+
+     /* Позволяем блоку расти по высоте без ограничения */
+     height: auto;
+     max-height: none;
+     overflow-y: visible;
+ }
 
 
  .comments h2 {
@@ -154,9 +156,14 @@
      transition: background-color 0.3s ease;
  }
 
-.btn-delete-comment:hover,
-.btn-delete-comment:focus {
-    background: #e06a6a;
-    transform: translateY(-2px);
-    outline: none;
-}
+ .btn-delete-comment:hover,
+ .btn-delete-comment:focus {
+     background: #e06a6a;
+     transform: translateY(-2px);
+     outline: none;
+ }
+
+ .main-contant-question {
+     transform: scale(0.8);
+     transform-origin: center;
+ }

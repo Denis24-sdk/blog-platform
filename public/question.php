@@ -63,9 +63,13 @@ $comments = $stmt->fetchAll();
   <meta charset="UTF-8" />
   <title><?= htmlspecialchars($question['title']) ?></title>
   <link rel="stylesheet" href="styles\question.css">
+
 </head>
 
 <body>
+  <?php include 'menu.php'; ?>
+
+  <main class="main-contant-question">
   <a href="questions.php" class="back-link">&larr; Назад к списку вопросов</a>
   <h1><?= htmlspecialchars($question['title']) ?></h1>
   <div class="meta">Автор: <?= htmlspecialchars($question['username']) ?>,
@@ -81,7 +85,7 @@ $comments = $stmt->fetchAll();
       <?php foreach ($comments as $comment): ?>
         <div class="comment">
           <div class="author"><?= htmlspecialchars($comment['username']) ?></div>
-          <div class="date"><?= htmlspecialchars($comment['created_at']) ?></div>
+          <div class="date"><?= htmlspecialchars(date('d.m.Y H:i', strtotime($comment['created_at']))) ?></div>
           <div class="text"><?= nl2br(htmlspecialchars($comment['body'])) ?></div>
 
           <?php if ($comment['user_id'] == $_SESSION['user_id']): ?>
@@ -104,6 +108,7 @@ $comments = $stmt->fetchAll();
       <button type="submit">Добавить комментарий</button>
     </form>
   </section>
+  </main>
 </body>
 
 </html>

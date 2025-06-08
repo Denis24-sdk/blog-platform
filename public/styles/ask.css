@@ -22,6 +22,9 @@ body {
     width: 100%;
     max-width: 600px;
     user-select: none;
+
+    transform: scale(0.8);
+    transform-origin: center;
 }
 
 h2 {

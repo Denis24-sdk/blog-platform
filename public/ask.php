@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="styles/ask.css">
 
   <style>
-
     /* стили для фильтров */
     .filters {
       margin-bottom: 24px;
@@ -114,6 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+  <?php include 'menu.php'; ?>
+
   <div class="container">
     <h2>Задать вопрос</h2>
     <?php if ($message): ?>
@@ -150,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
     <p><a href="index.php" class="btn-secondary">Назад</a></p>
   </div>
+
 </body>
 
 </html>
