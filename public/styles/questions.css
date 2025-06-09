@@ -283,3 +283,52 @@ body {
   }
 }
 
+
+
+
+
+.question {
+  position: relative; /* для позиционирования кнопки лайка */
+  padding-right: 60px; /* чтобы текст не заходил под кнопку */
+}
+
+.btn-like {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a3a3a3bd;
+  font-weight: 600;
+  font-size: 1rem;
+  user-select: none;
+  padding: 4px;
+  transition: transform 0.15s ease;
+  z-index: 10;
+}
+
+.btn-like:focus {
+  outline-offset: 2px;
+}
+
+.btn-like:hover {
+  transform: scale(1.1);
+}
+
+.like-icon {
+  width: 20px;
+  height: 20px;
+  stroke: #a3a3a395;
+  fill: none;
+  transition: fill 0.3s ease;
+}
+
+.btn-like[aria-pressed="true"] .like-icon {
+  fill: #ff4c4c;
+  stroke: #ff4c4c;
+}
+
