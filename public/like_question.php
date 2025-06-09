@@ -21,21 +21,30 @@ try {
   // Проверяем, поставил ли пользователь лайк
   $stmt = $pdo->prepare("SELECT 1 FROM question_likes WHERE question_id = :question_id AND user_id = :user_id");
   $stmt->execute([':question_id' => $questionId, ':user_id' => $userId]);
-  if ($stmt->fetch()) {
-    echo json_encode(['success' => false, 'message' => 'Вы уже лайкнули этот вопрос']);
-    exit;
-  }
+  $liked = (bool) $stmt->fetch();
 
-  // Добавляем лайк
-  $stmt = $pdo->prepare("INSERT INTO question_likes (question_id, user_id) VALUES (:question_id, :user_id)");
-  $stmt->execute([':question_id' => $questionId, ':user_id' => $userId]);
+  if ($liked) {
+    // Если лайк был — удаляем его
+    $stmt = $pdo->prepare("DELETE FROM question_likes WHERE question_id = :question_id AND user_id = :user_id");
+    $stmt->execute([':question_id' => $questionId, ':user_id' => $userId]);
+    $action = 'removed';
+  } else {
+    // Если лайка не было — добавляем
+    $stmt = $pdo->prepare("INSERT INTO question_likes (question_id, user_id) VALUES (:question_id, :user_id)");
+    $stmt->execute([':question_id' => $questionId, ':user_id' => $userId]);
+    $action = 'added';
+  }
 
   // Считаем новые лайки
   $stmt = $pdo->prepare("SELECT COUNT(*) FROM question_likes WHERE question_id = :question_id");
   $stmt->execute([':question_id' => $questionId]);
   $likesCount = (int) $stmt->fetchColumn();
 
-  echo json_encode(['success' => true, 'likes_count' => $likesCount]);
+  echo json_encode([
+    'success' => true,
+    'likes_count' => $likesCount,
+    'action' => $action,
+  ]);
 } catch (PDOException $e) {
   echo json_encode(['success' => false, 'message' => 'Ошибка сервера']);
 }

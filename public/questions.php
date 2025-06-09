@@ -31,6 +31,13 @@ if ($selectedSubcategory) {
 
 $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
+// Получаем общее количество пользователей
+$totalUsersStmt = $pdo->query('SELECT COUNT(id) FROM users');
+$totalUsers = (int) $totalUsersStmt->fetchColumn();
+if ($totalUsers === 0) {
+  $totalUsers = 1; // чтобы избежать деления на 0
+}
+
 $sql = "
   SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username,
          c.name AS category_name, s.name AS subcategory_name,
@@ -60,6 +67,7 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
   <link rel="stylesheet" href="styles/questions.css" />
+
 </head>
 
 <body>
@@ -93,10 +101,16 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <p>Пока нет вопросов. Будьте первым!</p>
     <?php else: ?>
       <div class="questions-wrapper">
-        <?php foreach ($questions as $q): ?>
-          <div class="question" style="position: relative;">
-            <a href="question.php?id=<?= $q['id'] ?>" class="question-link" tabindex="0"
-              style="display: block; padding-right: 60px;">
+        <?php foreach ($questions as $q):
+          $likeRatio = min(1, $q['likes_count'] / $totalUsers);
+          $likePercent = $likeRatio * 100;
+          ?>
+          <div class="question" id="question-<?= $q['id'] ?>">
+            <div class="like-bar" title="Лайков: <?= $q['likes_count'] ?> из <?= $totalUsers ?> пользователей">
+              <div class="like-bar-fill" style="height: <?= $likePercent ?>%;"></div>
+            </div>
+
+            <a href="question.php?id=<?= $q['id'] ?>" class="question-link" tabindex="0">
               <h3><?= htmlspecialchars($q['title']) ?></h3>
               <div class="author">
                 <?= htmlspecialchars($q['username']) ?>,
@@ -110,18 +124,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <p><?= nl2br(htmlspecialchars($q['body'])) ?></p>
             </a>
 
-            <button class="btn-like" data-question-id="<?= $q['id'] ?>"
-              aria-pressed="<?= $q['user_liked'] ? 'true' : 'false' ?>" type="button" aria-label="Поставить лайк">
-              <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
-                fill="<?= $q['user_liked'] ? '#ff4c4c' : 'none' ?>" stroke="#ff4c4c" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path
-                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                </path>
-              </svg>
-              <span class="likes-count"><?= $q['likes_count'] ?></span>
-            </button>
-
             <?php if ($q['user_id'] == $_SESSION['user_id']): ?>
               <form method="POST" action="delete_question.php" onsubmit="return confirm('Удалить этот вопрос?');"
                 tabindex="-1">
@@ -134,10 +136,22 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </button>
               </form>
             <?php endif; ?>
+
+            <button class="btn-like" data-question-id="<?= $q['id'] ?>"
+              aria-pressed="<?= $q['user_liked'] ? 'true' : 'false' ?>" type="button" aria-label="Поставить лайк">
+              <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                fill="<?= $q['user_liked'] ? '#ff4c4c' : 'none' ?>" stroke="#ff4c4c" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                </path>
+              </svg>
+            </button>
           </div>
+
+
         <?php endforeach; ?>
       </div>
-
     <?php endif; ?>
 
   </div>
@@ -188,16 +202,11 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     updateSubcategories();
 
-    // Лайки
+    // Обработка лайков
     document.querySelectorAll('.btn-like').forEach(button => {
       button.addEventListener('click', async () => {
         const questionId = button.dataset.questionId;
         const isLiked = button.getAttribute('aria-pressed') === 'true';
-
-        if (isLiked) {
-          alert('Вы уже поставили лайк этому вопросу.');
-          return;
-        }
 
         try {
           const response = await fetch('like_question.php', {
@@ -212,10 +221,30 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
           const result = await response.json();
 
           if (result.success) {
-            button.setAttribute('aria-pressed', 'true');
-            const countSpan = button.querySelector('.likes-count');
-            countSpan.textContent = result.likes_count;
-            button.querySelector('.like-icon').setAttribute('fill', '#ff4c4c');
+            const likedNow = (result.action === 'added');
+            button.setAttribute('aria-pressed', likedNow ? 'true' : 'false');
+            button.style.color = likedNow ? '#ff4c4c' : '#a3a3a3bd';
+            const icon = button.querySelector('.like-icon');
+            if (icon) {
+              icon.setAttribute('fill', likedNow ? '#ff4c4c' : 'none');
+            }
+
+            const questionDiv = button.closest('.question');
+            if (questionDiv) {
+              const likeBarFill = questionDiv.querySelector('.like-bar-fill');
+              if (likeBarFill) {
+                const totalUsers = <?= $totalUsers ?>;
+                const newLikesCount = result.likes_count;
+                const newRatio = Math.min(1, newLikesCount / totalUsers);
+                const newPercent = newRatio * 100;
+                likeBarFill.style.height = newPercent + '%';
+
+                const likeBar = questionDiv.querySelector('.like-bar');
+                if (likeBar) {
+                  likeBar.title = `Лайков: ${newLikesCount} из ${totalUsers} пользователей`;
+                }
+              }
+            }
           } else {
             alert(result.message || 'Ошибка при постановке лайка');
           }
@@ -224,6 +253,7 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
       });
     });
+
   </script>
 </body>
 

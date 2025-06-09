@@ -119,6 +119,7 @@ body {
 }
 
 .question {
+  position: relative;
   background: #2a2e4a;
   border-radius: 14px;
   padding: 22px 28px;
@@ -132,6 +133,8 @@ body {
   overflow: hidden;
   border: 1.5px solid transparent;
 }
+
+
 
 .question:hover,
 .question:focus-within {
@@ -176,7 +179,7 @@ body {
 }
 
 .question .author small:last-of-type {
-  margin-top: -20px; 
+  margin-top: -20px;
 }
 
 .question p {
@@ -221,7 +224,7 @@ body {
   transform: translateY(-2px);
   outline: none;
   box-shadow: 0 8px 28px rgba(255, 76, 76, 0.782);
-    color: white;
+  color: white;
 }
 
 .btn-delete svg {
@@ -286,16 +289,37 @@ body {
 
 
 
-
-.question {
-  position: relative; /* для позиционирования кнопки лайка */
-  padding-right: 60px; /* чтобы текст не заходил под кнопку */
+/* Вертикальная полоска лайков справа */
+.like-bar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: calc(100% - 16px);
+  background: #444;
+  border-radius: 0 4px 4px 0;
+  overflow: hidden;
+  z-index: 5;
+  cursor: default;
 }
 
+.like-bar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ff4c4c;
+  border-radius: 0 4px 4px 0;
+  transition: height 0.3s ease;
+}
+
+
+
+/* Кнопка лайка — прижата справа внизу рядом с полоской */
 .btn-like {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  bottom: 8px;
+  right: 20px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -306,29 +330,33 @@ body {
   font-weight: 600;
   font-size: 1rem;
   user-select: none;
-  padding: 4px;
-  transition: transform 0.15s ease;
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.15s ease;
   z-index: 10;
 }
 
+.btn-like:hover,
 .btn-like:focus {
-  outline-offset: 2px;
+  background-color: rgba(255, 76, 76, 0.15);
+  transform: scale(1.1);
+  color: #ff4c4c;
+  outline: none;
 }
 
-.btn-like:hover {
-  transform: scale(1.1);
+.btn-like[aria-pressed="true"] {
+  color: #ff4c4c;
 }
 
 .like-icon {
   width: 20px;
   height: 20px;
-  stroke: #a3a3a395;
+  stroke: currentColor;
   fill: none;
   transition: fill 0.3s ease;
 }
 
 .btn-like[aria-pressed="true"] .like-icon {
-  fill: #ff4c4c;
-  stroke: #ff4c4c;
+  fill: currentColor;
+  stroke: currentColor;
 }
-
