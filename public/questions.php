@@ -10,6 +10,7 @@ $userId = $_SESSION['user_id'];
 
 $selectedCategory = isset($_GET['category']) ? (int) $_GET['category'] : null;
 $selectedSubcategory = isset($_GET['subcategory']) ? (int) $_GET['subcategory'] : null;
+$sort = isset($_GET['sort']) && in_array($_GET['sort'], ['date', 'popularity']) ? $_GET['sort'] : 'date';
 
 $categoriesStmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
 $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,6 +39,12 @@ if ($totalUsers === 0) {
   $totalUsers = 1; // чтобы избежать деления на 0
 }
 
+// Определяем порядок сортировки
+$orderBy = 'q.created_at DESC';
+if ($sort === 'popularity') {
+  $orderBy = 'likes_count DESC, q.created_at DESC';
+}
+
 $sql = "
   SELECT q.id, q.title, q.body, q.created_at, q.user_id, u.username,
          c.name AS category_name, s.name AS subcategory_name,
@@ -49,7 +56,7 @@ $sql = "
   JOIN categories c ON q.category_id = c.id
   LEFT JOIN subcategories s ON q.subcategory_id = s.id
   $whereSql
-  ORDER BY q.created_at DESC
+  ORDER BY $orderBy
 ";
 
 $params[':user_id'] = $userId;
@@ -67,7 +74,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Рекомендации - Форум</title>
   <link rel="stylesheet" href="styles/questions.css" />
-
 </head>
 
 <body>
@@ -77,7 +83,8 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h2 style="margin-top: -0.4rem;">Вопросы</h2>
 
     <form method="GET" class="filters" id="filtersForm">
-      <div class="filters-row">
+
+      <div class="filters-row top-row">
         <select name="category" id="category" autocomplete="off">
           <option value="">-- Все категории --</option>
           <?php foreach ($categories as $cat): ?>
@@ -86,16 +93,23 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </option>
           <?php endforeach; ?>
         </select>
-      </div>
 
-      <div class="filters-row">
         <select name="subcategory" id="subcategory" autocomplete="off" style="display:none;">
           <option value="">-- Все подкатегории --</option>
         </select>
+
+        <button type="submit" class="btn-compleat-filters">Применить</button>
       </div>
 
-      <button type="submit" class="btn-compleat-filters">Применить</button>
+      <div class="filters-row sort-row">
+        <select name="sort" id="sort" autocomplete="off">
+          <option value="date" <?= $sort === 'date' ? 'selected' : '' ?>>Сортировать по дате</option>
+          <option value="popularity" <?= $sort === 'popularity' ? 'selected' : '' ?>>Сортировать по популярности</option>
+        </select>
+      </div>
+
     </form>
+
 
     <?php if (empty($questions)): ?>
       <p>Пока нет вопросов. Будьте первым!</p>
@@ -148,8 +162,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </svg>
             </button>
           </div>
-
-
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
@@ -253,7 +265,6 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
       });
     });
-
   </script>
 </body>
 
