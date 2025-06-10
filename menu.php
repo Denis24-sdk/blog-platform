@@ -23,7 +23,7 @@
             z-index: 1000;
             user-select: none;
             transform-origin: top left;
-            transform: scale(1.3);
+            transform: scale(1.1);
         }
 
         .nav-links {
@@ -137,7 +137,8 @@
             </li>
             <li><a href="ask.php"><i class='bx bx-task'></i><span class="link_name">Задать вопрос</span></a></li>
             <li><a href="tournaments.php"><i class='bx bx-group'></i><span class="link_name">Турниры</span></a></li>
-            <li><a href="create_tournament.php"><i class='bx bx-group'></i><span class="link_name">Создать турнир</span></a></li>
+            <li><a href="create_tournament.php"><i class='bx bx-group'></i><span class="link_name">Создать
+                        турнир</span></a></li>
         </ul>
         <button class="toggle-btn" id="toggleBtn" aria-label="Toggle menu" aria-expanded="false">
             <i class='bx bx-chevron-down'></i>
@@ -149,6 +150,11 @@
         const toggleBtn = document.getElementById('toggleBtn');
         const toggleIcon = toggleBtn.querySelector('i');
         const navLinks = document.getElementById('navLinks');
+
+        // Функция для определения, является ли устройство мобильным
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
 
         function setMenuState(isOpen) {
             if (isOpen) {
@@ -174,11 +180,19 @@
                 toggleIcon.className = 'bx bx-chevron-down';
                 topMenu.style.height = '25px';
             }
-            localStorage.setItem('menuOpen', isOpen);
+
+            // Сохраняем состояние только на ПК
+            if (!isMobileDevice()) {
+                localStorage.setItem('menuOpen', isOpen);
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            const savedState = localStorage.getItem('menuOpen') === 'true';
+            let savedState = false;
+            // Проверяем состояние только на ПК
+            if (!isMobileDevice()) {
+                savedState = localStorage.getItem('menuOpen') === 'true';
+            }
             setMenuState(savedState);
         });
 

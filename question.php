@@ -39,8 +39,8 @@ $stmt->execute([$question_id]);
 $question = $stmt->fetch();
 
 if (!$question) {
-    echo "Вопрос не найден.";
-    exit;
+  echo "Вопрос не найден.";
+  exit;
 }
 
 // Получаем комментарии с user_id
@@ -63,51 +63,50 @@ $comments = $stmt->fetchAll();
   <meta charset="UTF-8" />
   <title><?= htmlspecialchars($question['title']) ?></title>
   <link rel="stylesheet" href="styles\question.css">
-
 </head>
 
 <body>
   <?php include 'menu.php'; ?>
 
-  <main class="main-contant-question">
-  <a href="questions.php" class="back-link">&larr; Назад к списку вопросов</a>
-  <h1><?= htmlspecialchars($question['title']) ?></h1>
-  <div class="meta">Автор: <?= htmlspecialchars($question['username']) ?>,
-    <?= htmlspecialchars($question['created_at']) ?>
-  </div>
-  <div class="body"><?= nl2br(htmlspecialchars($question['body'])) ?></div>
+  <main class="main-content">
+    <a href="questions.php" class="back-link">&larr; Назад к списку вопросов</a>
+    <h1><?= htmlspecialchars($question['title']) ?></h1>
+    <div class="question-meta">
+      Автор: <?= htmlspecialchars($question['username']) ?>,
+      <?= htmlspecialchars($question['created_at']) ?>
+    </div>
+    <div class="body"><?= nl2br(htmlspecialchars($question['body'])) ?></div>
 
-  <section class="comments">
-    <h2>Комментарии (<?= count($comments) ?>)</h2>
-    <?php if (count($comments) === 0): ?>
-      <p>Пока нет комментариев. Будьте первым!</p>
-    <?php else: ?>
-      <?php foreach ($comments as $comment): ?>
-        <div class="comment">
-          <div class="author"><?= htmlspecialchars($comment['username']) ?></div>
-          <div class="date"><?= htmlspecialchars(date('d.m.Y H:i', strtotime($comment['created_at']))) ?></div>
-          <div class="text"><?= nl2br(htmlspecialchars($comment['body'])) ?></div>
+    <section class="comments">
+      <h2>Комментарии (<?= count($comments) ?>)</h2>
+      <?php if (count($comments) === 0): ?>
+        <p>Пока нет комментариев. Будьте первым!</p>
+      <?php else: ?>
+        <?php foreach ($comments as $comment): ?>
+          <div class="comment">
+            <div class="author"><?= htmlspecialchars($comment['username']) ?></div>
+            <div class="date"><?= htmlspecialchars(date('d.m.Y H:i', strtotime($comment['created_at']))) ?></div>
+            <div class="text"><?= nl2br(htmlspecialchars($comment['body'])) ?></div>
 
-          <?php if ($comment['user_id'] == $_SESSION['user_id']): ?>
-            <form method="POST" action="delete_comment.php" onsubmit="return confirm('Удалить этот комментарий?');"
-              style="margin-top:8px;">
-              <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
-              <button type="submit" class="btn-delete-comment">Удалить</button>
-            </form>
-          <?php endif; ?>
-        </div>
-
-      <?php endforeach; ?>
-    <?php endif; ?>
-
-    <form class="comment-form" method="POST" action="">
-      <?php if (!empty($error)): ?>
-        <div class="error"><?= htmlspecialchars($error) ?></div>
+            <?php if ($comment['user_id'] == $_SESSION['user_id']): ?>
+              <form method="POST" action="delete_comment.php" onsubmit="return confirm('Удалить этот комментарий?');"
+                style="margin-top:8px;">
+                <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
+                <button type="submit" class="btn-delete-question">Удалить</button>
+              </form>
+            <?php endif; ?>
+          </div>
+        <?php endforeach; ?>
       <?php endif; ?>
-      <textarea name="comment_body" placeholder="Оставьте комментарий..." required></textarea>
-      <button type="submit">Добавить комментарий</button>
-    </form>
-  </section>
+
+      <form class="comment-form" method="POST" action="">
+        <?php if (!empty($error)): ?>
+          <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        <textarea name="comment_body" placeholder="Оставьте комментарий..." required></textarea>
+        <button type="submit" class="btn-add-comment">Добавить комментарий</button>
+      </form>
+    </section>
   </main>
 </body>
 

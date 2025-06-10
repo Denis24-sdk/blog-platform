@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Вход</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles\login.css">
+    <link rel="stylesheet" href="styles/login.css">
 </head>
 
 <body>
     <div class="container">
         <h2>Вход</h2>
         <?php if ($message): ?>
-            <p class="message"><?= htmlspecialchars($message) ?></p>
+            <div class="message"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
         <form method="post" action="login.php" novalidate>
             <input type="text" name="username" placeholder="Имя пользователя" aria-label="Имя пользователя"
