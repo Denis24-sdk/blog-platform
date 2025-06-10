@@ -54,7 +54,9 @@ try {
                 $isRegistered = in_array($t['id'], $registered);
                 $currentCount = $counts[$t['id']] ?? 0;
                 ?>
-                <article class="tournament-card" tabindex="0" aria-label="Турнир <?= htmlspecialchars($t['title']) ?>">
+
+
+                <article class="tournament-card" data-players-count="<?= (int) $t['players_count'] ?>" tabindex="0" aria-label="Турнир <?= htmlspecialchars($t['title']) ?>">
                     <div class="tournament-header">
                         <div class="tournament-type">
                             <?= htmlspecialchars(mb_convert_case($t['type'], MB_CASE_TITLE, "UTF-8")) ?>
@@ -86,72 +88,88 @@ try {
                             Записалось: <span class="count"><?= $currentCount ?></span>
                         </div>
 
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: <?= ($currentCount / ($t['players_count'] ?? 1)) * 100 ?>%;"></div>
+                        </div>
+
                         <button class="btn-register" data-tournament-id="<?= (int) $t['id'] ?>" <?= $isRegistered ? 'disabled' : '' ?>>
                             <?= $isRegistered ? 'Вы записаны' : 'Записаться на турнир' ?>
                         </button>
                     </div>
-
-
                 </article>
+
+
+
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.btn-register');
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.btn-register');
 
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (button.disabled) return;
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.disabled) return;
 
-            const tournamentId = button.getAttribute('data-tournament-id');
-            if (!tournamentId) return;
+                const tournamentId = button.getAttribute('data-tournament-id');
+                if (!tournamentId) return;
 
-            button.disabled = true;
-            button.textContent = 'Записываем...';
+                button.disabled = true;
+                button.textContent = 'Записываем...';
 
-            fetch('register_tournament.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'tournament_id=' + encodeURIComponent(tournamentId)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // Если сервер вернул ошибку, пытаемся распарсить сообщение
-                    return response.json().then(err => Promise.reject(err));
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    button.textContent = 'Вы записаны';
-
-                    // Ищем элемент с классом .count внутри карточки турнира
-                    const container = button.closest('.tournament-card');
-                    if (container) {
-                        const countElem = container.querySelector('.count');
-                        if (countElem) {
-                            countElem.textContent = data.count;
-                        }
+                fetch('register_tournament.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'tournament_id=' + encodeURIComponent(tournamentId)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
                     }
-                } else {
-                    alert(data.message || data.error || 'Не удалось записаться');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        button.textContent = 'Вы записаны';
+
+                        const container = button.closest('.tournament-card');
+                        if (container) {
+                            // Обновляем счётчик
+                            const countElem = container.querySelector('.count');
+                            if (countElem) {
+                                countElem.textContent = data.count;
+                            }
+
+                            // ОБНОВЛЯЕМ ПРОГРЕСС-БАР
+                            const progressBar = container.querySelector('.progress-fill');
+                            if (progressBar) {
+                                const playersCount = parseInt(container.getAttribute('data-players-count'));
+                                const newCount = parseInt(data.count);
+                                const percentage = playersCount > 0 
+                                    ? Math.min(100, (newCount / playersCount) * 100) 
+                                    : 0;
+                                
+                                progressBar.style.width = `${percentage}%`;
+                            }
+                        }
+                    } else {
+                        alert(data.message || data.error || 'Не удалось записаться');
+                        button.disabled = false;
+                        button.textContent = 'Записаться на турнир';
+                    }
+                })
+                .catch(err => {
+                    console.error('Ошибка запроса:', err);
+                    alert('Ошибка сети. Попробуйте позже.');
                     button.disabled = false;
                     button.textContent = 'Записаться на турнир';
-                }
-            })
-            .catch(err => {
-                console.error('Ошибка запроса:', err);
-                alert('Ошибка сети. Попробуйте позже.');
-                button.disabled = false;
-                button.textContent = 'Записаться на турнир';
+                });
             });
         });
     });
-});
 </script>
 
 
