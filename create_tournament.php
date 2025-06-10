@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 
-// Проверка авторизации (если нужно)
 if (!is_logged_in()) {
-    // Например, редирект на страницу входа
     header('Location: login.php');
     exit;
 }
@@ -70,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $description,
                 $playersCount,
                 $eventDate,
-                $_SESSION['user_id']  // например, сохраняем кто создал
+                $_SESSION['user_id']
             ]);
             $success = true;
 
@@ -85,23 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создать турнир или сходку</title>
-    <link rel="stylesheet" href="styles\create_tournament.css">
+    <link rel="stylesheet" href="styles/create_tournament.css">
 
 </head>
 
 <body>
     <?php include 'menu.php'; ?>
 
-    <div class="container">
+    <div class="main-content">
         <h1>Создать турнир или сходку</h1>
 
         <?php if ($success): ?>
@@ -117,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST" action="">
-            <label for="type">Турнир или сходка:</label>
+            <label for="type">Тип события:</label>
             <select id="type" name="type" required>
                 <option value="" disabled <?= $type === '' ? 'selected' : '' ?>>-- выберите тип --</option>
                 <option value="турнир" <?= $type === 'турнир' ? 'selected' : '' ?>>Турнир</option>
@@ -126,38 +122,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label for="title">Название:</label>
             <input type="text" id="title" name="title" required placeholder="Введите название"
-                value="<?= htmlspecialchars($title) ?>" />
+                value="<?= htmlspecialchars($title) ?>">
 
             <label for="game">Игра:</label>
             <input type="text" id="game" name="game" required placeholder="Введите название игры"
-                value="<?= htmlspecialchars($game) ?>" />
+                value="<?= htmlspecialchars($game) ?>">
 
             <label for="description">Описание события:</label>
             <textarea id="description" name="description" required
                 placeholder="Опишите событие"><?= htmlspecialchars($description) ?></textarea>
 
             <label class="prize-label">
-                <input type="checkbox" id="hasPrize" name="hasPrize" <?= $hasPrize ? 'checked' : '' ?> />
-                Есть награда <span class="premium">★</span>
+                <input type="checkbox" id="hasPrize" name="hasPrize" <?= $hasPrize ? 'checked' : '' ?>>
+                Есть награда
             </label>
 
             <div class="prize-description" id="prizeDescriptionDiv"
                 style="<?= $hasPrize ? 'display:block;' : 'display:none;' ?>">
-                <label for="prizeDescription">Описание награды:</label>
                 <textarea id="prizeDescription" name="prizeDescription"
                     placeholder="Опишите награды"><?= htmlspecialchars($prizeDescription) ?></textarea>
             </div>
 
             <label for="playersCount">Количество игроков:</label>
             <input type="number" id="playersCount" name="playersCount" min="1" placeholder="Например, 16"
-                value="<?= htmlspecialchars($playersCount) ?>" />
+                value="<?= htmlspecialchars($playersCount) ?>">
 
             <label for="eventDate">Дата:</label>
-            <input type="date" id="eventDate" name="eventDate" required value="<?= htmlspecialchars($eventDate) ?>" />
+            <input type="date" id="eventDate" name="eventDate" required value="<?= htmlspecialchars($eventDate) ?>">
 
             <button type="submit">Создать</button>
         </form>
-
     </div>
 
     <script>

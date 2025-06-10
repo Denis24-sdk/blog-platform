@@ -12,18 +12,16 @@
             top: 0;
             left: 0;
             width: 180px;
-            background: #121426;
-            box-shadow: 0 4px 15px rgba(70, 80, 160, 0.26);
+            background: #1E1E1E;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             border-radius: 0 0 16px 16px;
             overflow: hidden;
             height: 25px;
-            /* изначально высота кнопки */
             transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             z-index: 1000;
             user-select: none;
-
             transform-origin: top left;
             transform: scale(1.3);
         }
@@ -58,26 +56,25 @@
             margin-bottom: 6px;
         }
 
-
         .nav-links li a {
             display: flex;
             align-items: center;
             height: 100%;
             text-decoration: none;
-            color: #aabfff;
+            color: #E0E0E0;
             border-radius: 10px;
             padding: 0 12px;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: background 0.4s ease, color 0.4s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             user-select: text;
         }
 
         .nav-links li a:hover,
         .nav-links li a:focus {
-            background: #5a66cc;
-            color: #f0f4ff;
-            box-shadow: 0 0 10px #7a8affcc;
+            background: #3A3A3A;
+            color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             outline: none;
         }
 
@@ -85,13 +82,13 @@
             min-width: 22px;
             font-size: 18px;
             margin-right: 10px;
-            color: #7a8aff;
+            color: #FFD700;
             transition: color 0.3s ease;
         }
 
         .nav-links li a:hover i,
         .nav-links li a:focus i {
-            color: #e0e6ff;
+            color: #E0E0E0;
         }
 
         .link_name {
@@ -101,9 +98,9 @@
         .toggle-btn {
             height: 25px;
             width: 100%;
-            background: #2a2e4a;
+            background: #2A2A2A;
             border: none;
-            color: #cdd6ff;
+            color: #E0E0E0;
             cursor: pointer;
             font-size: 1.2rem;
             display: flex;
@@ -116,15 +113,15 @@
             padding: 0;
         }
 
-        .toggle-btn:hover{
-            background: #5a66cc;
-            box-shadow: 0 0 15px #7a8affcc;
+        .toggle-btn:hover {
+            background: #3A3A3A;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
             outline: none;
         }
 
         .toggle-btn i {
             font-size: 22px;
-            color: #cdd6ff;
+            color: #E0E0E0;
             transition: color 0.3s ease;
             line-height: 1;
         }
@@ -160,22 +157,12 @@
                 toggleBtn.setAttribute('aria-expanded', 'true');
                 toggleIcon.className = 'bx bx-chevron-up';
 
-                // Рассчитаем высоту контейнера динамически
                 const linksCount = navLinks.children.length;
-
-                // Высота одного li + margin-bottom (кроме последнего)
-                // Высота li = 30px, margin-bottom = 6px, кроме последнего
                 const liHeight = 30;
                 const liMarginBottom = 6;
                 const totalLinksHeight = liHeight * linksCount + liMarginBottom * (linksCount - 1);
-
-                // Отступ сверху у ul: 12px
                 const ulMarginTop = 12;
-
-                // Высота кнопки toggle: 25px
                 const toggleHeight = 25;
-
-                // Итоговая высота контейнера
                 const totalHeight = totalLinksHeight + ulMarginTop + toggleHeight;
 
                 topMenu.style.height = totalHeight + 'px';
@@ -185,8 +172,6 @@
                 topMenu.setAttribute('aria-expanded', 'false');
                 toggleBtn.setAttribute('aria-expanded', 'false');
                 toggleIcon.className = 'bx bx-chevron-down';
-
-                // При закрытом меню высота равна высоте кнопки
                 topMenu.style.height = '25px';
             }
             localStorage.setItem('menuOpen', isOpen);
@@ -206,3 +191,4 @@
 </body>
 
 </html>
+

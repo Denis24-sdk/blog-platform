@@ -1,300 +1,217 @@
-/* --- Общие стили --- */
 body {
-  max-width: 900px;
-  margin: 30px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Helvetica Neue', Arial, sans-serif;
-  color: #f0f4ff;
-  background: #121426;
-  padding: 20px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  user-select: text;
+  font-family: 'Arial', sans-serif;
+  background-color: #121212;
+  color: #E0E0E0;
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
 }
 
-/* Контейнер */
-.container {
-  background: #1f2233;
-  border-radius: 12px;
-  padding: 40px 50px;
-  box-shadow:
-    0 0 0 1px #444eaa,
-    0 10px 30px rgba(70, 80, 160, 0.7);
-  max-width: 900px;
-  margin: 0 auto;
-  user-select: none;
-}
-
-/* Заголовок */
-h1, h2 {
-  color: #aabfff;
-  margin-bottom: 24px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  font-size: 1.9rem;
-  border-bottom: 2px solid #5a66cc;
-  padding-bottom: 6px;
-  margin-top: 0;
+h1,
+h2 {
+  color: #FFD700;
+  margin-bottom: 10px;
   text-align: center;
+  /* Центрирование заголовка */
 }
 
-/* Таблица */
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 12px;
-  font-size: 1rem;
-  color: #cbd6ff;
-}
-
-th, td {
-  padding: 12px 20px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-th {
-  color: #8693b0;
-  font-weight: 600;
-  border-bottom: 2px solid #444eaa;
-}
-
-tbody tr {
-  background: #2a2e4a;
-  border-radius: 12px;
-  box-shadow:
-    0 0 8px #5062ff88;
-  transition: background-color 0.3s ease;
-}
-
-tbody tr:hover {
-  background: #38417a;
-  box-shadow:
-    0 0 12px 3px #7a8affcc,
-    inset 0 0 12px #7a8affcc;
-}
-
-td:first-child {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-td:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-/* Приз */
-.prize {
-  color: #d48806; /* золотистый акцент */
-  font-weight: 700;
-}
-
-/* Кнопки */
-button, .btn {
-  background: #5062ff;
-  color: #f0f4ff;
-  padding: 12px 24px;
-  border-radius: 16px;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  box-shadow:
-    inset 0 0 8px #7a8affcc,
-    0 6px 18px #7a8affcc;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  user-select: none;
-  display: inline-block;
-  text-align: center;
+a {
+  color: #1E90FF;
   text-decoration: none;
 }
 
-button:hover, button:focus,
-.btn:hover, .btn:focus {
-  background: #7a8aff;
-  box-shadow:
-    inset 0 0 12px #aabfffcc,
-    0 8px 24px #aabfffcc;
-  outline: none;
+a:hover {
+  text-decoration: underline;
 }
 
-/* Сообщения */
-.message {
-  background: rgba(255, 76, 76, 0.2);
-  color: #ffb6b6;
-  border-radius: 12px;
-  padding: 14px 20px;
-  margin-bottom: 28px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 2px 12px rgba(255, 76, 76, 0.4);
-  user-select: text;
+
+
+/* Основной контент */
+.main-content {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #1E1E1E;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
 }
 
-/* Успех */
-.message.success {
-  background: rgba(75, 255, 105, 0.2);
-  color: #9fff9f;
-  box-shadow: 0 2px 12px rgba(75, 255, 105, 0.4);
+/* Стили для секций */
+.user-info,
+.stats,
+.user-questions {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #2A2A2A;
+  border-radius: 5px;
 }
 
-/* --- Стили для input, textarea, select --- */
-
-/* Общие стили для всех input, textarea и select */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="search"],
-input[type="tel"],
-input[type="url"],
-input[type="date"],
-input[type="time"],
-input[type="datetime-local"],
-input[type="month"],
-input[type="week"],
-textarea,
-select {
-  width: 100%;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border: 1.5px solid #444eaa;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #f0f4ff;
-  background: #2a2e4a;
-  box-shadow:
-    inset 0 0 8px #5062ff88;
-  transition:
-    border-color 0.3s ease,
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
-  margin-bottom: 28px;
-  box-sizing: border-box;
-  font-family: inherit;
-  user-select: text;
-  appearance: none; /* для select убрать дефолтный стрелочный стиль */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: text;
+.user-info p,
+.stats div {
+  margin: 5px 0;
 }
 
-/* Для textarea увеличить минимальную высоту */
-textarea {
-  min-height: 220px;
-  resize: vertical;
+/* Стили для списка вопросов */
+.questions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Placeholder */
-textarea::placeholder,
-input::placeholder {
-  color: #8693b0;
-  opacity: 1;
-  font-style: italic;
+.question-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #2A2A2A;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+  border: 1px solid #333;
+  /* Обводка вокруг вопроса */
 }
 
-/* Фокус на полях */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-input[type="search"]:focus,
-input[type="tel"]:focus,
-input[type="url"]:focus,
-input[type="date"]:focus,
-input[type="time"]:focus,
-input[type="datetime-local"]:focus,
-input[type="month"]:focus,
-input[type="week"]:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #5a66cc;
-  background: #38417a;
-  box-shadow:
-    0 0 12px 3px #7a8affcc,
-    inset 0 0 12px #7a8affcc;
-  color: #f0f4ff;
-  cursor: text;
+.question-item:hover {
+  background-color: #3A3A3A;
+  transform: translateY(-2px);
 }
 
-/* Стрелка у select */
-select {
-  background-image:
-    linear-gradient(45deg, transparent 50%, #cbd6ff 50%),
-    linear-gradient(135deg, #cbd6ff 50%, transparent 50%),
-    linear-gradient(to right, #2a2e4a, #2a2e4a);
-  background-position:
-    calc(100% - 20px) calc(1em + 2px),
-    calc(100% - 15px) calc(1em + 2px),
-    100% 0;
-  background-size: 5px 5px, 5px 5px, 1px 1.5em;
-  background-repeat: no-repeat;
+.question-meta {
+  color: #999;
+  /* Общий цвет для мета-информации */
+}
+
+.question-meta span strong {
+  color: #d0d0d0;
+  /* Цвет для "Категория", "Подкатегория" и т.д. */
+  font-weight: normal;
+}
+
+/* Кнопки */
+.btn-delete-question {
+  background-color: #FF4500;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  /* Меньше отступы */
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 0.8rem;
+  /* Меньше размер шрифта */
 }
 
-/* Адаптивность */
-@media (max-width: 700px) {
-  .container {
-    padding: 30px 25px;
-    max-width: 100%;
-  }
-
-  table, th, td {
-    font-size: 0.9rem;
-  }
-
-  button, .btn {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 1.1rem;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="date"],
-  input[type="time"],
-  input[type="datetime-local"],
-  input[type="month"],
-  input[type="week"],
-  textarea,
-  select {
-    font-size: 1rem;
-    padding: 14px 16px;
-    margin-bottom: 24px;
-  }
+.btn-delete-question:hover {
+  background-color: #FF6347;
+  transform: scale(1.05);
 }
 
+/* Стили для ссылок выхода */
+.logout-link {
+  display: block;
+  /* Блочный элемент для центрирования */
+  margin: 20px auto;
+  /* Автоматические отступы и margin-top */
+  color: #FF4500;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  text-align: center;
+  /* Центрирование текста */
+  width: fit-content;
+  /* Автоматическая ширина по контенту */
+}
 
+.logout-link:hover {
+  background-color: rgba(255, 69, 0, 0.2);
+  text-decoration: none;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+  color: #d0d0d0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+#prizeDescription {
+  width: 40%;
+}
+
+select {
+  appearance: none;
+  /* Remove default arrow */
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e0e0e0"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px top 50%;
+  background-size: 16px;
+  padding-right: 30px;
+  /* Make space for arrow */
+}
+
+button {
+  background-color: #1E90FF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #46a9ff;
+}
+
+.message {
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.message.success {
+  background-color: rgba(50, 205, 50, 0.3);
+  color: #90ee90;
+}
+
+.message.error {
+  background-color: rgba(255, 69, 0, 0.3);
+  color: #ff7f50;
+}
 
 .prize-label {
-  display: block;
-  margin-bottom: 28px;
-  cursor: pointer;
-  user-select: none;
-  color: #cbd6ff;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-/* Метки полей */
-form label {
-  display: block;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
-  color: #b0bbff; 
+  color: #d0d0d0;
 }
 
-label .premium {
-    color: #ffc800;
+.prize-label input[type="checkbox"] {
+  margin-right: 5px;
 }
 
-
-
+.prize-description {
+  margin-top: 10px;
+}
