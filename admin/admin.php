@@ -94,7 +94,7 @@ $questions = $stmt->fetchAll();
             <?php foreach ($questions as $q): ?>
                 <tr>
                     <td><?= $q['id'] ?></td>
-                    <td><a href="../public/question.php?id=<?= $q['id'] ?>"
+                    <td><a href="../question.php?id=<?= $q['id'] ?>"
                             target="_blank"><?= htmlspecialchars($q['title']) ?></a></td>
                     <td><?= htmlspecialchars($q['username']) ?></td>
                     <td><?= $q['created_at'] ?></td>
