@@ -88,22 +88,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="container">
     <h2>Задать вопрос</h2>
     <?php if ($message): ?>
-      <p class="message"><?= htmlspecialchars($message) ?></p>
+      <p class="message">
+        <?= htmlspecialchars($message) ?>
+      </p>
     <?php endif; ?>
     <form method="post" action="ask.php" novalidate>
       <label for="title">Название вопроса:</label>
       <input id="title" type="text" name="title" value="<?= htmlspecialchars($_POST['title'] ?? '') ?>" required>
 
       <label for="body">Текст вопроса:</label>
-      <textarea id="body" name="body" class="textarea-text"
-        required><?= htmlspecialchars($_POST['body'] ?? '') ?></textarea>
+      <textarea id="body" name="body" class="textarea-text" required>
+        <?= htmlspecialchars($_POST['body'] ?? '') ?>
+      </textarea>
 
       <div class="filters">
         <div class="filters-row">
           <select id="category_id" name="category_id" required>
             <option value="">-- Выберите категорию --</option>
             <?php foreach ($categories as $cat): ?>
-              <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
+              <option value="<?= $cat['id'] ?>">
+                <?= htmlspecialchars($cat['name']) ?>
+              </option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -113,11 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="">-- Выберите подкатегорию --</option>
             <!-- Опции подкатегорий будут динамически добавлены JS -->
           </select>
-          </di>
         </div>
+      </div>
 
-
-        <button type="submit">Отправить</button>
+      <button type="submit">Отправить</button>
     </form>
   </div>
 

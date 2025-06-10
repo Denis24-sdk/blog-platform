@@ -10,7 +10,7 @@ $user_id = $_SESSION['user_id'];
 
 // Обработка удаления вопроса
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete_question_id'])) {
-  $deleteId = (int)$_POST['delete_question_id'];
+  $deleteId = (int) $_POST['delete_question_id'];
 
   // Проверяем, что вопрос принадлежит текущему пользователю
   $stmt = $pdo->prepare("SELECT id FROM questions WHERE id = ? AND user_id = ?");
@@ -66,32 +66,47 @@ $stmt->execute([$user_id]);
 $user_questions = $stmt->fetchAll();
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
   <meta charset="UTF-8" />
-  <title>Личный кабинет - <?=htmlspecialchars($user['username'])?></title>
+  <title>Личный кабинет -
+    <?= htmlspecialchars($user['username']) ?>
+  </title>
   <link rel="stylesheet" href="styles/index.css">
   <link rel="stylesheet" href="styles/menu.css">
-
 </head>
 
 <body>
   <?php include 'menu.php'; ?>
 
   <main class="main-content" role="main" aria-label="Личный кабинет пользователя">
-    <h1>Добро пожаловать, <?=htmlspecialchars($user['username'])?>!</h1>
+    <h1>Добро пожаловать,
+      <?= htmlspecialchars($user['username']) ?>!
+    </h1>
 
     <section class="user-info" aria-label="Информация о пользователе">
-      <p><strong>Имя пользователя:</strong> <?=htmlspecialchars($user['username'])?></p>
-      <p><strong>Email:</strong> <?=htmlspecialchars($user['email'])?></p>
-      <p><strong>Дата регистрации:</strong> <?=htmlspecialchars(date('d.m.Y H:i', strtotime($user['created_at'])))?></p>
+      <p><strong>Имя пользователя:</strong>
+        <?= htmlspecialchars($user['username']) ?>
+      </p>
+      <p><strong>Email:</strong>
+        <?= htmlspecialchars($user['email']) ?>
+      </p>
+      <p><strong>Дата регистрации:</strong>
+        <?= htmlspecialchars(date('d.m.Y H:i', strtotime($user['created_at']))) ?>
+      </p>
     </section>
 
     <section class="stats" aria-label="Статистика пользователя">
-      <div><strong>Вопросов задано:</strong> <?= $questions_count ?></div>
-      <div><strong>Комментариев оставлено:</strong> <?= $comments_count ?></div>
+      <div><strong>Вопросов задано:</strong>
+        <?= $questions_count ?>
+      </div>
+      <div><strong>Комментариев оставлено:</strong>
+        <?= $comments_count ?>
+      </div>
     </section>
 
     <section class="user-questions" aria-label="Список вопросов пользователя">
@@ -99,25 +114,37 @@ $user_questions = $stmt->fetchAll();
       <?php if (count($user_questions) === 0): ?>
         <p>Вы ещё не задавали вопросов.</p>
       <?php else: ?>
-        <ul class="questions-list" style="list-style: none; padding: 0; margin: 0;">
+        <ul class="questions-list">
           <?php foreach ($user_questions as $q): ?>
             <li class="question-item">
               <div class="question-main">
                 <div class="question-title">
-                  <a href="question.php?id=<?= (int)$q['id'] ?>" tabindex="0"><?=htmlspecialchars($q['title'])?></a>
+                  <a href="question.php?id=<?= (int) $q['id'] ?>" tabindex="0">
+                    <?= htmlspecialchars($q['title']) ?>
+                  </a>
                 </div>
                 <div class="question-meta" aria-label="Информация о вопросе">
-                  <span>Категория: <?=htmlspecialchars($q['category_name'] ?? '—')?></span>
-                  <span>Подкатегория: <?=htmlspecialchars($q['subcategory_name'] ?? '—')?></span>
-                  <span>Дата: <?=htmlspecialchars(date('d.m.Y H:i', strtotime($q['created_at'])))?></span>
-                  <span>Лайков: <?= (int)$q['likes_count'] ?></span>
+                  <span><strong>Категория:</strong>
+                    <?= htmlspecialchars($q['category_name'] ?? '—') ?>
+                  </span>
+                  <span><strong>Подкатегория:</strong>
+                    <?= htmlspecialchars($q['subcategory_name'] ?? '—') ?>
+                  </span>
+                  <span><strong>Дата:</strong>
+                    <?= htmlspecialchars(date('d.m.Y H:i', strtotime($q['created_at']))) ?>
+                  </span>
+                  <span><strong>Лайков:</strong>
+                    <?= (int) $q['likes_count'] ?>
+                  </span>
                 </div>
               </div>
 
               <div class="question-actions">
-                <form method="POST" onsubmit="return confirm('Вы действительно хотите удалить этот вопрос?');" style="margin:0;">
-                  <input type="hidden" name="delete_question_id" value="<?= (int)$q['id'] ?>">
-                  <button type="submit" class="btn-delete-question" aria-label="Удалить вопрос <?=htmlspecialchars($q['title'])?>">
+                <form method="POST" onsubmit="return confirm('Вы действительно хотите удалить этот вопрос?');"
+                  style="margin:0;">
+                  <input type="hidden" name="delete_question_id" value="<?= (int) $q['id'] ?>">
+                  <button type="submit" class="btn-delete-question"
+                    aria-label="Удалить вопрос <?= htmlspecialchars($q['title']) ?>">
                     Удалить
                   </button>
                 </form>
@@ -133,4 +160,3 @@ $user_questions = $stmt->fetchAll();
 </body>
 
 </html>
-
