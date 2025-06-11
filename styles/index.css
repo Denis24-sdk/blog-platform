@@ -143,3 +143,10 @@ a:hover {
   text-decoration: none;
 }
 
+
+
+@media (max-width: 600px) {
+  .main-content {
+    margin: 0 auto;
+  }
+}

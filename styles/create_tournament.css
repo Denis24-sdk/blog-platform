@@ -215,3 +215,10 @@ button:hover {
 .prize-description {
   margin-top: 10px;
 }
+
+
+@media (max-width: 700px) {
+  .main-content {
+    margin-top: 0;
+  }
+}

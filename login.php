@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <h2>Вход</h2>
         <?php if ($message): ?>
-            <div class="message"><?= htmlspecialchars($message) ?></div>
+            <div class="message"><p><?= htmlspecialchars($message) ?></p></div>
         <?php endif; ?>
         <form method="post" action="login.php" novalidate>
             <input type="text" name="username" placeholder="Имя пользователя" aria-label="Имя пользователя"
