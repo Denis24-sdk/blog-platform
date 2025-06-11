@@ -62,7 +62,12 @@ a:hover {
   margin-bottom: 20px;
   padding: 15px;
   background-color: #2A2A2A;
-  border-radius: 5px;
+  border-radius: 10px;
+}
+
+.user-info,
+.stats {
+  border: 1px solid #FFD700;
 }
 
 .user-info p,
@@ -80,10 +85,10 @@ a:hover {
 .question-item {
   margin-bottom: 15px;
   padding: 15px;
-  background-color: #2A2A2A;
+  background-color: #242424ab;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.3s;
-  border: 1px solid #333;
+  border: 1px solid #474747;
   /* Обводка вокруг вопроса */
 }
 

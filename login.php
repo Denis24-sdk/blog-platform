@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "Введите имя пользователя и пароль";
     } else {
         if (loginUser($username, $password)) {
+            // Устанавливаем флаг для показа уведомления один раз после входа
+            $_SESSION['show_swipe_notification'] = true;
+
             header('Location: index.php');
             exit;
         } else {

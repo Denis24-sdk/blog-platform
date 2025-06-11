@@ -296,12 +296,11 @@
             }
         });
 
-        // Свайпы остаются без изменений
         if (isMobileDevice()) {
             let startX = 0;
             let endX = 0;
             const swipeThreshold = 80;
-            const openSwipeZone = 150;
+            const openSwipeZone = 250;
 
             document.addEventListener('touchstart', (e) => {
                 const touchX = e.touches[0].clientX;

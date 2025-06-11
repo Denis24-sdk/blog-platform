@@ -212,7 +212,7 @@ a:hover {
 
 .progress-fill {
     height: 100%;
-    background-color: #4CAF50;
+    background: linear-gradient(90deg, #81c784 0%, #4caf50 50%, #388e3c 100%);
     border-radius: 4px;
     width: 0%;
     transition: width 0.3s ease;
@@ -233,14 +233,22 @@ a:hover {
 
 /* Кастомные стили */
 .tournament-type {
-    color: #87b9ff;
+    background: linear-gradient(90deg, #87b9ff 0%, #5a8cff 50%, #3d6bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
     /* По умолчанию белый */
     font-weight: bold;
     font-size: 1.4rem;
 }
 
 .tournament-type.tournament {
-    color: #ff9100;
+    background: linear-gradient(90deg, #ffb347 0%, #ff9100 50%, #cc7000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
     /* Оранжевый для "Турнир" */
 }
 
@@ -252,8 +260,10 @@ a:hover {
 }
 
 
+
+
 @media (max-width: 700px) {
-  .main-content {
-    margin-top: 0;
-  }
+    .main-content {
+        margin-top: 0;
+    }
 }

@@ -294,7 +294,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #FF4500;
+  background: linear-gradient(to top, #ff7a70 0%, #ff4500 100%);
   border-radius: 0;
   transition: height 0.3s ease;
 }
@@ -343,4 +343,3 @@ body {
   fill: currentColor;
   stroke: currentColor;
 }
-
