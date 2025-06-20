@@ -1,157 +1,523 @@
-/* Основные стили */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #121212;
-  color: #E0E0E0;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9rem;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
 
-h1,
-h2 {
-  color: #FFD700;
-  margin-bottom: 10px;
-  text-align: center;
-  /* Центрирование заголовка */
-}
+    :root {
+      --bg-color: #0a0b21;
+      --card-bg: rgba(16, 18, 42, 0.95);
+      --card-bg-hover: rgba(37, 36, 81, 0.98);
+      --text-primary: #e1e4ff;
+      --text-secondary: #a0a4d1;
+      --accent-primary-from: #7f6ffd;
+      --accent-primary-to: #b3a7ff;
+      --accent-danger: #ff6b6b;
+      --accent-success: #4ade80;
+      --btn-bg: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+      --btn-bg-hover: linear-gradient(135deg, #6d5ef5, #9d8eff);
+      --btn-danger-bg: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+      --btn-danger-hover: linear-gradient(135deg, #e05a5a, #ff7a7a);
+      --font-family: 'Montserrat', sans-serif;
+      --shadow-card: 0 12px 40px rgba(82, 82, 142, 0.55);
+      --shadow-btn: 0 6px 20px rgba(127, 111, 253, 0.65);
+      --border-radius: 20px;
+    }
 
-a {
-  color: #1E90FF;
-  text-decoration: none;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-a:hover {
-  text-decoration: underline;
-}
+    body {
+      background: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
 
-/* Стили для меню */
-.menu {
-  background-color: #1E1E1E;
-  padding: 15px;
-  display: flex;
-  justify-content: space-around;
-  border-bottom: 2px solid #FFD700;
-}
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(127, 111, 253, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(179, 167, 255, 0.15) 0%, transparent 20%),
+        linear-gradient(135deg, #0a0b21 0%, #141632 100%);
+      z-index: -1;
+    }
 
-.menu a {
-  color: #E0E0E0;
-  padding: 10px 15px;
-  border-radius: 5px;
-}
+    .main-content {
+      max-width: 1200px;
+      margin: 4rem auto 5rem;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
 
-.menu a:hover {
-  background-color: #3A3A3A;
-}
+    .profile-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      padding: 2rem 0;
+    }
 
-/* Основной контент */
-.main-content {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #1E1E1E;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-}
+    .profile-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-primary-from), var(--accent-primary-to));
+      border-radius: 4px;
+    }
 
-/* Стили для секций */
-.user-info,
-.stats,
-.user-questions {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #2A2A2A;
-  border-radius: 10px;
-}
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 5px 15px rgba(127, 111, 253, 0.3);
+      animation: textGlow 6s infinite alternate;
+    }
 
-.user-info,
-.stats {
-  border: 1px solid #FFD700;
-}
+    @keyframes textGlow {
+      0% {
+        text-shadow: 0 0 10px rgba(127, 111, 253, 0.5);
+      }
 
-.user-info p,
-.stats div {
-  margin: 5px 0;
-}
+      100% {
+        text-shadow: 0 0 25px rgba(179, 167, 255, 0.8);
+      }
+    }
 
-/* Стили для списка вопросов */
-.questions-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
 
-.question-item {
-  margin-bottom: 15px;
-  padding: 15px;
-  background-color: #242424ab;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.3s;
-  border: 1px solid #474747;
-  /* Обводка вокруг вопроса */
-}
+    .profile-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-.question-item:hover {
-  background-color: #3A3A3A;
-  transform: translateY(-2px);
-}
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-primary-from), var(--accent-primary-to));
+    }
 
-.question-meta {
-  color: #999;
-  /* Общий цвет для мета-информации */
-}
+    .profile-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(82, 82, 142, 0.7);
+      background: var(--card-bg-hover);
+    }
 
-.question-meta span strong {
-  color: #d0d0d0;
-  /* Цвет для "Категория", "Подкатегория" и т.д. */
-  font-weight: normal;
-}
+    .card-title {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-primary-to);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
 
-/* Кнопки */
-.btn-delete-question {
-  background-color: #FF4500;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  /* Меньше отступы */
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  font-size: 0.8rem;
-  /* Меньше размер шрифта */
-}
+    .card-title i {
+      font-size: 1.8rem;
+      color: var(--accent-primary-from);
+      animation: iconPulse 3s infinite;
+    }
 
-.btn-delete-question:hover {
-  background-color: #FF6347;
-  transform: scale(1.05);
-}
+    @keyframes iconPulse {
 
-/* Стили для ссылок выхода */
-.logout-link {
-  display: block;
-  /* Блочный элемент для центрирования */
-  margin: 20px auto;
-  /* Автоматические отступы и margin-top */
-  color: #FF4500;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  text-align: center;
-  /* Центрирование текста */
-  width: fit-content;
-  /* Автоматическая ширина по контенту */
-}
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
 
-.logout-link:hover {
-  background-color: rgba(255, 69, 0, 0.2);
-  text-decoration: none;
-}
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
 
+    .info-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem 1.5rem;
+      font-size: 1.1rem;
+    }
 
+    .info-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
 
-@media (max-width: 600px) {
-  .main-content {
-    margin: 0 auto;
-  }
-}
+    .info-value {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 15px;
+      padding: 1.2rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      background: rgba(127, 111, 253, 0.15);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent-primary-to);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px rgba(179, 167, 255, 0.3);
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .questions-section {
+      margin-top: 2rem;
+    }
+
+    .section-header {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(127, 111, 253, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .questions-container {
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-card);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-primary-from), var(--accent-primary-to));
+      opacity: 0.7;
+    }
+
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(82, 82, 142, 0.65);
+      background: var(--card-bg-hover);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+    }
+
+    .question-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .question-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: linear-gradient(to right, var(--accent-primary-to), var(--accent-primary-to));
+      background-size: 0% 2px;
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      padding-bottom: 3px;
+    }
+
+    .question-title a:hover {
+      color: var(--accent-primary-to);
+      background-size: 100% 2px;
+      text-shadow: 0 0 15px rgba(179, 167, 255, 0.4);
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .meta-item i {
+      color: var(--accent-primary-from);
+      width: 20px;
+      text-align: center;
+    }
+
+    .likes-count {
+      color: var(--accent-success);
+      font-weight: 600;
+    }
+
+    .question-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .question-date {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .btn-delete {
+      background: var(--btn-danger-bg);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-delete:hover {
+      background: var(--btn-danger-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(255, 107, 107, 0.6);
+    }
+
+    .logout-container {
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .btn-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: var(--btn-bg);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      transition: all 0.4s ease;
+      box-shadow: var(--shadow-btn);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-logout::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(127, 111, 253, 0.8);
+    }
+
+    .btn-logout:hover::before {
+      left: 100%;
+    }
+
+    /* Уведомление для мобильных */
+    #swipe-notification {
+      background: linear-gradient(90deg, #ffca62, #ff9e4a);
+      color: #000;
+      padding: 14px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10000;
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: 0 5px 20px rgba(255, 202, 98, 0.7);
+      animation: slideIn 0.5s, pulse 2s infinite;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 5px 20px rgba(255, 202, 98, 0.7);
+      }
+
+      50% {
+        box-shadow: 0 5px 30px rgba(255, 202, 98, 0.9);
+      }
+
+      100% {
+        box-shadow: 0 5px 20px rgba(255, 202, 98, 0.7);
+      }
+    }
+
+    #close-swipe-notification {
+      margin-left: 15px;
+      background: rgba(0, 0, 0, 0.15);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #close-swipe-notification:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 992px) {
+      .main-content {
+        margin-top: 3rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 0 1.5rem;
+        margin-top: 2rem;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .profile-card {
+        padding: 2rem;
+      }
+
+      .question-card {
+        padding: 1.8rem;
+      }
+
+      .question-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .question-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      .section-header {
+        font-size: 1.7rem;
+      }
+
+      .card-title {
+        font-size: 1.4rem;
+      }
+
+      .profile-card {
+        padding: 1.8rem 1.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+      }
+
+      .btn-logout {
+        width: 100%;
+        justify-content: center;
+      }
+    }

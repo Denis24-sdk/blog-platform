@@ -32,19 +32,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <div class="container">
-        <h2>Вход</h2>
+    <div class="center-container">
+        <!-- Логотип - появляется слева -->
+        <div class="login-header">
+            <div class="logo animate-left">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+
+            <!-- Заголовок - появляется справа -->
+            <h2 class="login-title animate-right">Вход</h2>
+        </div>
+
+        <!-- Сообщение об ошибке - появляется слева -->
         <?php if ($message): ?>
-            <div class="message"><p><?= htmlspecialchars($message) ?></p></div>
+            <div class="message animate-left">
+                <i class="fas fa-exclamation-circle"></i>
+                <p><?= htmlspecialchars($message) ?></p>
+            </div>
         <?php endif; ?>
-        <form method="post" action="login.php" novalidate>
-            <input type="text" name="username" placeholder="Имя пользователя" aria-label="Имя пользователя"
-                value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
-            <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
-            <button type="submit">Войти</button>
-        </form>
-        <p><a href="register.php">Регистрация</a></p>
+
+        <!-- Карточка входа -->
+        <div class="login-card">
+            <form method="post" action="login.php" novalidate>
+                <!-- Поле логина - появляется слева -->
+                <div class="input-group animate-left">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" placeholder="Имя пользователя"
+                        value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
+                </div>
+
+                <!-- Поле пароля - появляется справа -->
+                <div class="input-group password-input animate-right">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" id="password" placeholder="Пароль" required>
+                </div>
+
+                <!-- Кнопка входа - появляется снизу -->
+                <button type="submit" class="submit-btn animate-up">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+            </form>
+
+            <!-- Ссылка на регистрацию - появляется снизу -->
+            <div class="register-link animate-up">
+                <p>Ещё нет аккаунта? <a href="register.php">Зарегистрироваться</a></p>
+            </div>
+        </div>
     </div>
+
+    <script>
+
+        // Анимация элементов при загрузке
+        document.addEventListener('DOMContentLoaded', function () {
+            // Убедимся, что все анимированные элементы скрыты до начала анимации
+            const animatedElements = document.querySelectorAll('.animate-left, .animate-right, .animate-up');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+            });
+        });
+    </script>
 </body>
 
 </html>

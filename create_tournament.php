@@ -90,83 +90,124 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создать турнир или сходку</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/create_tournament.css">
-
 </head>
 
 <body>
     <?php include 'menu.php'; ?>
 
-    <div class="main-content">
+    <div class="container-create">
         <h1>Создать турнир или сходку</h1>
 
-        <?php if ($success): ?>
-            <div class="message success">Турнир/сходка успешно создана!</div>
-        <?php endif; ?>
+        <div class="form-container">
+            <?php if ($success): ?>
+                <div class="message success">
+                    <i class="fas fa-check-circle"></i> Турнир/сходка успешно создана!
+                </div>
+            <?php endif; ?>
 
-        <?php if ($errors): ?>
-            <div class="message error">
-                <?php foreach ($errors as $error): ?>
-                    <div><?= htmlspecialchars($error) ?></div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+            <?php if ($errors): ?>
+                <div class="message error">
+                    <?php foreach ($errors as $error): ?>
+                        <div><i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($error) ?></div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
-        <form method="POST" action="">
-            <label for="type">Тип события:</label>
-            <select id="type" name="type" required>
-                <option value="" disabled <?= $type === '' ? 'selected' : '' ?>>-- выберите тип --</option>
-                <option value="турнир" <?= $type === 'турнир' ? 'selected' : '' ?>>Турнир</option>
-                <option value="сходка" <?= $type === 'сходка' ? 'selected' : '' ?>>Сходка</option>
-            </select>
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="type">Тип события:</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled <?= $type === '' ? 'selected' : '' ?>>-- выберите тип --</option>
+                        <option value="турнир" <?= $type === 'турнир' ? 'selected' : '' ?>>Турнир</option>
+                        <option value="сходка" <?= $type === 'сходка' ? 'selected' : '' ?>>Сходка</option>
+                    </select>
+                </div>
 
-            <label for="title">Название:</label>
-            <input type="text" id="title" name="title" required placeholder="Введите название"
-                value="<?= htmlspecialchars($title) ?>">
+                <div class="form-group">
+                    <label for="title">Название:</label>
+                    <input type="text" id="title" name="title" required placeholder="Введите название"
+                        value="<?= htmlspecialchars($title) ?>">
+                </div>
 
-            <label for="game">Игра:</label>
-            <input type="text" id="game" name="game" required placeholder="Введите название игры"
-                value="<?= htmlspecialchars($game) ?>">
+                <div class="form-group">
+                    <label for="game">Игра:</label>
+                    <input type="text" id="game" name="game" required placeholder="Введите название игры"
+                        value="<?= htmlspecialchars($game) ?>">
+                </div>
 
-            <label for="description">Описание события:</label>
-            <textarea id="description" name="description" required
-                placeholder="Опишите событие"><?= htmlspecialchars($description) ?></textarea>
+                <div class="form-group">
+                    <label for="description">Описание события:</label>
+                    <textarea id="description" name="description" required
+                        placeholder="Опишите событие"><?= htmlspecialchars($description) ?></textarea>
+                </div>
 
-            <label class="prize-label">
-                <input type="checkbox" id="hasPrize" name="hasPrize" <?= $hasPrize ? 'checked' : '' ?>>
-                Есть награда
-            </label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="hasPrize" name="hasPrize" <?= $hasPrize ? 'checked' : '' ?>>
+                    <label for="hasPrize">Есть награда</label>
+                </div>
 
-            <div class="prize-description" id="prizeDescriptionDiv"
-                style="<?= $hasPrize ? 'display:block;' : 'display:none;' ?>">
-                <textarea id="prizeDescription" name="prizeDescription"
-                    placeholder="Опишите награды"><?= htmlspecialchars($prizeDescription) ?></textarea>
-            </div>
+                <div class="form-group prize-description" id="prizeDescriptionDiv"
+                    style="<?= $hasPrize ? 'display:block;' : 'display:none;' ?>">
+                    <label for="prizeDescription">Описание награды:</label>
+                    <textarea id="prizeDescription" name="prizeDescription"
+                        placeholder="Опишите награды"><?= htmlspecialchars($prizeDescription) ?></textarea>
+                </div>
 
-            <label for="playersCount">Количество игроков:</label>
-            <input type="number" id="playersCount" name="playersCount" min="1" placeholder="Например, 16"
-                value="<?= htmlspecialchars($playersCount) ?>">
+                <div class="form-group">
+                    <label for="playersCount">Количество игроков (необязательно):</label>
+                    <input type="number" id="playersCount" name="playersCount" min="1" placeholder="Например, 16"
+                        value="<?= htmlspecialchars($playersCount) ?>">
+                </div>
 
-            <label for="eventDate">Дата:</label>
-            <input type="date" id="eventDate" name="eventDate" required value="<?= htmlspecialchars($eventDate) ?>">
+                <div class="form-group">
+                    <label for="eventDate">Дата события:</label>
+                    <input type="date" id="eventDate" name="eventDate" required
+                        value="<?= htmlspecialchars($eventDate) ?>">
+                </div>
 
-            <button type="submit">Создать</button>
-        </form>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-plus-circle"></i> Создать событие
+                </button>
+            </form>
+        </div>
     </div>
 
     <script>
         const hasPrizeCheckbox = document.getElementById('hasPrize');
         const prizeDescriptionDiv = document.getElementById('prizeDescriptionDiv');
+        const prizeDescriptionTextarea = document.getElementById('prizeDescription');
 
         hasPrizeCheckbox.addEventListener('change', () => {
             if (hasPrizeCheckbox.checked) {
                 prizeDescriptionDiv.style.display = 'block';
-                document.getElementById('prizeDescription').setAttribute('required', 'required');
+                prizeDescriptionTextarea.setAttribute('required', 'required');
+
+                // Анимация появления
+                prizeDescriptionDiv.style.opacity = '0';
+                prizeDescriptionDiv.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    prizeDescriptionDiv.style.transition = 'all 0.3s ease';
+                    prizeDescriptionDiv.style.opacity = '1';
+                    prizeDescriptionDiv.style.transform = 'translateY(0)';
+                }, 10);
             } else {
-                prizeDescriptionDiv.style.display = 'none';
-                document.getElementById('prizeDescription').removeAttribute('required');
+                prizeDescriptionTextarea.removeAttribute('required');
+
+                // Анимация скрытия
+                prizeDescriptionDiv.style.transition = 'all 0.3s ease';
+                prizeDescriptionDiv.style.opacity = '0';
+                prizeDescriptionDiv.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    prizeDescriptionDiv.style.display = 'none';
+                }, 300);
             }
         });
+
+        // Установка минимальной даты - сегодняшний день
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('eventDate').min = today;
     </script>
 </body>
 

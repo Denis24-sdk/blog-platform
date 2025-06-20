@@ -1,342 +1,565 @@
+<?php
+require_once __DIR__ . '/config/config.php';
+
+// Проверка авторизации пользователя
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Получение ПОЛНЫХ данных пользователя из БД
+$stmt = $pdo->prepare("SELECT username, email, created_at FROM users WHERE id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$user = $stmt->fetch();
+
+// Если пользователь не найден - выход
+if (!$user) {
+    header('Location: login.php');
+    exit;
+}
+
+// Получаем первую букву имени
+$firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Меню сверху с кнопкой внизу и плавным скольжением</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навигационное меню</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        .top-menu {
+        :root {
+            --bg-color: #0a0b21;
+            --card-bg: rgba(16, 18, 42, 0.95);
+            --text-primary: #e1e4ff;
+            --text-secondary: #a0a4d1;
+            --accent-primary-from: #7f6ffd;
+            --accent-primary-to: #b3a7ff;
+            --accent-success: #4ade80;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --shadow-card: 0 12px 40px rgba(82, 82, 142, 0.55);
+            --shadow-btn: 0 6px 20px rgba(127, 111, 253, 0.65);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            touch-action: pan-y; /* Для свайпа */
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(127, 111, 253, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(179, 167, 255, 0.15) 0%, transparent 20%);
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Навигационное меню */
+        .nav-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            background: #1E1E1E;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            border-radius: 0 0 16px 16px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            top: 20px;
+            left: 20px;
             z-index: 1000;
             user-select: none;
-            transform-origin: top left;
-            transform: scale(1.1);
-            color: #E0E0E0;
+            width: 60px;
+            height: 60px;
         }
 
-        /* --- ПК стиль --- */
-        .top-menu:not(.mobile) {
-            width: 180px;
-            height: 25px;
-            /* свернуто */
-            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .menu-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-btn);
+            transition: var(--transition);
+            z-index: 1001;
+            position: relative;
+            overflow: hidden;
         }
 
-        .top-menu:not(.mobile).open {
-            /* высота вычисляется JS inline */
-            overflow: visible;
+        .menu-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-primary-to), var(--accent-primary-from));
+            opacity: 0;
+            transition: var(--transition);
+            border-radius: 50%;
         }
 
-        /* --- Мобильный стиль --- */
-        .top-menu.mobile {
-            width: 0;
-            height: 100vh;
-            border-radius: 0 16px 16px 0;
-            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
-            overflow-x: hidden;
-            overflow-y: auto;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .menu-toggle:hover::before {
+            opacity: 1;
         }
 
-        .top-menu.mobile.open {
-            width: 180px;
-        }
-
-        /* Ссылки */
-        .nav-links {
-            list-style: none;
-            margin: 12px 0 0 0;
-            padding: 0;
+        .hamburger {
+            position: relative;
+            width: 30px;
+            height: 24px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            transition: opacity 0.35s ease;
-            flex-grow: 1;
+            justify-content: space-between;
         }
 
-        /* Скрываем ссылки, если меню закрыто */
-        .top-menu:not(.open) .nav-links {
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        /* Анимация при открытии меню - классический гамбургер → крестик */
+        .menu-open .hamburger span:nth-child(1) {
+            transform: translateY(10.5px) rotate(45deg);
+        }
+
+        .menu-open .hamburger span:nth-child(2) {
             opacity: 0;
-            height: 0;
-            margin: 0;
+            transform: scaleX(0);
+        }
+
+        .menu-open .hamburger span:nth-child(3) {
+            transform: translateY(-10.5px) rotate(-45deg);
+        }
+
+        /* Анимация волны при клике */
+        @keyframes wave {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .menu-toggle:active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: wave 0.6s ease-out;
+        }
+
+        .menu-content {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 80px 20px 20px;
+            width: 280px;
+            height: auto;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 999;
+            transform: translateX(-120%);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(127, 111, 253, 0.3);
             pointer-events: none;
         }
 
-        /* Показываем ссылки, если меню открыто */
-        .top-menu.open .nav-links {
+        .menu-open .menu-content {
+            transform: translateX(0);
             opacity: 1;
-            height: auto;
             pointer-events: auto;
-            margin-top: 12px;
         }
 
         /* Пункты меню */
-        .nav-links li {
-            height: 30px;
-            margin-bottom: 6px;
+        .nav-links {
+            list-style: none;
         }
+
+        .nav-links li {
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .menu-open .nav-links li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .menu-open .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+        .menu-open .nav-links li:nth-child(2) { transition-delay: 0.15s; }
+        .menu-open .nav-links li:nth-child(3) { transition-delay: 0.2s; }
+        .menu-open .nav-links li:nth-child(4) { transition-delay: 0.25s; }
+        .menu-open .nav-links li:nth-child(5) { transition-delay: 0.3s; }
+        .menu-open .nav-links li:nth-child(6) { transition-delay: 0.35s; }
+        .menu-open .nav-links li:nth-child(7) { transition-delay: 0.4s; }
 
         .nav-links li a {
             display: flex;
             align-items: center;
-            height: 100%;
+            padding: 15px 20px;
             text-decoration: none;
-            color: #E0E0E0;
-            border-radius: 10px;
-            padding: 0 12px;
+            color: var(--text-primary);
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-            user-select: text;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(127, 111, 253, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-links li a:hover,
-        .nav-links li a:focus {
-            background: #3A3A3A;
-            color: #FFD700;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            outline: none;
+        .nav-links li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary-from), var(--accent-primary-to));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(127, 111, 253, 0.15);
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(127, 111, 253, 0.3);
+        }
+
+        .nav-links li a:hover::before {
+            transform: translateX(0);
         }
 
         .nav-links li a i {
-            min-width: 22px;
-            font-size: 18px;
-            margin-right: 10px;
-            color: #FFD700;
-            transition: color 0.3s ease;
+            min-width: 28px;
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--accent-primary-to);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
-        .nav-links li a:hover i,
-        .nav-links li a:focus i {
-            color: #E0E0E0;
+        .nav-links li a:hover i {
+            color: #fff;
+            transform: scale(1.15);
         }
 
-        .link_name {
-            white-space: nowrap;
+        /* Информация о пользователе */
+        .user-info {
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(127, 111, 253, 0.2);
+            text-align: center;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s ease 0.2s;
         }
 
-        /* Кнопка toggle */
-        .toggle-btn {
-            height: 25px;
-            width: 100%;
-            background: #2A2A2A;
-            border: none;
-            color: #E0E0E0;
-            cursor: pointer;
-            font-size: 1.2rem;
+        .menu-open .user-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0 0 16px 16px;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-            flex-shrink: 0;
-            user-select: none;
-            padding: 0;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Кнопка скрыта на мобилке */
-        .top-menu.mobile .toggle-btn {
-            display: none;
+        .username {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1.2rem;
         }
 
-        .toggle-btn:hover {
-            background: #3A3A3A;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            outline: none;
+        .user-status {
+            font-size: 0.9rem;
+            color: var(--accent-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .toggle-btn i {
-            font-size: 22px;
-            color: #E0E0E0;
-            transition: color 0.3s ease;
-            line-height: 1;
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--accent-success);
+            animation: pulseStatus 2s infinite;
         }
 
-        /* Оверлей - скрыт по умолчанию */
-        .overlay {
+        @keyframes pulseStatus {
+            0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+        }
+
+        /* Оверлей */
+        .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            /* ниже меню (1000) */
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 998;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
-        /* Показываем оверлей, когда моб. меню открыто */
-        .top-menu.mobile.open~.overlay {
+        .menu-open .menu-overlay {
             opacity: 1;
             pointer-events: auto;
         }
 
-        body.no-scroll {
-            overflow: hidden;
-            touch-action: none;
-            /* блокирует скролл и жесты */
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-menu {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .menu-toggle {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .menu-content {
+                width: calc(100% - 30px);
+                left: 15px;
+                top: 15px;
+                max-height: calc(100vh - 30px);
+            }
+            
+            .hamburger {
+                width: 26px;
+                height: 20px;
+            }
+            
+            .hamburger span {
+                height: 2.5px;
+            }
+            
+            .menu-open .hamburger span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-open .hamburger span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
         }
     </style>
-
-
-
 </head>
-
 <body>
-
-    <div class="overlay"></div>
-
-    <div class="top-menu" id="topMenu" aria-expanded="false">
-        <ul class="nav-links" id="navLinks">
-            <li><a href="index.php"><i class='bx bx-grid-alt'></i><span class="link_name">Аккаунт</span></a></li>
-            <li><a href="questions.php"><i class='bx bx-briefcase'></i><span class="link_name">Форум</span></a></li>
-            <li><a href="ask.php"><i class='bx bx-task'></i><span class="link_name">Задать вопрос</span></a></li>
-            <li><a href="tournaments.php"><i class='bx bx-group'></i><span class="link_name">Турниры</span></a></li>
-            <li><a href="create_tournament.php"><i class='bx bx-group'></i><span class="link_name">Создать
-                        турнир</span></a></li>
-        </ul>
-        <button class="toggle-btn" id="toggleBtn" aria-label="Toggle menu" aria-expanded="false">
-            <i class='bx bx-chevron-down'></i>
+    <!-- Навигационное меню -->
+    <div class="nav-menu">
+        <button class="menu-toggle" id="menuToggle" aria-label="Переключить меню">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </button>
+        
+        <div class="menu-content" id="menuContent">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar"><?= htmlspecialchars($firstLetter) ?></div>
+                <div class="username" id="username"><?= htmlspecialchars($user['username']) ?></div>
+                <div class="user-status">
+                    <span class="status-indicator"></span> Онлайн
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.php"><i class='bx bx-user'></i>Аккаунт</a></li>
+                <li><a href="questions.php"><i class='bx bx-message-rounded-dots'></i>Форум</a></li>
+                <li><a href="ask.php"><i class='bx bx-question-mark'></i>Задать вопрос</a></li>
+                <li><a href="tournaments.php"><i class='bx bx-trophy'></i>Турниры</a></li>
+                <li><a href="create_tournament.php"><i class='bx bx-plus-circle'></i>Создать турнир</a></li>
+                <li><a href="#"><i class='bx bx-cog'></i>Настройки</a></li>
+                <li><a href="login.php"><i class='bx bx-log-out'></i>Выход</a></li>
+            </ul>
+        </div>
     </div>
+    
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <script>
-        const topMenu = document.getElementById('topMenu');
-        const toggleBtn = document.getElementById('toggleBtn');
-        const toggleIcon = toggleBtn.querySelector('i');
-        const navLinks = document.getElementById('navLinks');
-        const overlay = document.querySelector('.overlay');
-
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const menuToggle = document.getElementById('menuToggle');
+        const menuContent = document.getElementById('menuContent');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const body = document.body;
+        const userAvatar = document.getElementById('userAvatar');
+        
+        let menuOpen = false;
+        let startX = 0;
+        let currentX = 0;
+        let isSwiping = false;
+        const swipeThreshold = 50; // Минимальное расстояние свайпа для активации
+        
+        // Функция для генерации случайного цвета
+        function getRandomColor() {
+            const colors = [
+                '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', 
+                '#98D8C8', '#F78FB3', '#7F6FFD', '#4ADE80',
+                '#FFCA62', '#6A89CC', '#F8C471', '#48DBFB'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
-
-        function setMenuState(isOpen) {
-            if (isMobileDevice()) {
-                if (isOpen) {
-                    topMenu.classList.add('open');
-                    topMenu.setAttribute('aria-expanded', 'true');
-                    toggleBtn.setAttribute('aria-expanded', 'true');
-                    // Кнопка toggle скрыта на мобилке, иконку не меняем
-
-                    // Блокируем скролл и взаимодействие с остальной страницей
-                    document.body.classList.add('no-scroll');
-                } else {
-                    topMenu.classList.remove('open');
-                    topMenu.setAttribute('aria-expanded', 'false');
-                    toggleBtn.setAttribute('aria-expanded', 'false');
-
-                    // Разблокируем скролл и взаимодействие
-                    document.body.classList.remove('no-scroll');
-                }
+        
+        // Функция для корректировки цвета (создание градиента)
+        function adjustColor(color, percent) {
+            let R = parseInt(color.substring(1,3),16);
+            let G = parseInt(color.substring(3,5),16);
+            let B = parseInt(color.substring(5,7),16);
+            
+            R = Math.min(255, Math.max(0, R + R * percent/100));
+            G = Math.min(255, Math.max(0, G + G * percent/100));
+            B = Math.min(255, Math.max(0, B + B * percent/100));
+            
+            const RR = Math.round(R).toString(16).padStart(2, '0');
+            const GG = Math.round(G).toString(16).padStart(2, '0');
+            const BB = Math.round(B).toString(16).padStart(2, '0');
+            
+            return `#${RR}${GG}${BB}`;
+        }
+        
+        // Переключение меню
+        menuToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            updateMenuState();
+        });
+        
+        // Закрытие меню при клике на оверлей
+        menuOverlay.addEventListener('click', () => {
+            menuOpen = false;
+            updateMenuState();
+        });
+        
+        // Закрытие меню при нажатии Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && menuOpen) {
+                menuOpen = false;
+                updateMenuState();
+            }
+        });
+        
+        function updateMenuState() {
+            if (menuOpen) {
+                body.classList.add('menu-open');
             } else {
-                if (isOpen) {
-                    topMenu.classList.add('open');
-                    topMenu.setAttribute('aria-expanded', 'true');
-                    toggleBtn.setAttribute('aria-expanded', 'true');
-                    toggleIcon.className = 'bx bx-chevron-up';
-
-                    const linksCount = navLinks.children.length;
-                    const liHeight = 30;
-                    const liMarginBottom = 6;
-                    const totalLinksHeight = liHeight * linksCount + liMarginBottom * (linksCount - 1);
-                    const ulMarginTop = 12;
-                    const toggleHeight = 25;
-                    const totalHeight = totalLinksHeight + ulMarginTop + toggleHeight;
-
-                    topMenu.style.height = totalHeight + 'px';
-                } else {
-                    topMenu.classList.remove('open');
-                    topMenu.setAttribute('aria-expanded', 'false');
-                    toggleBtn.setAttribute('aria-expanded', 'false');
-                    toggleIcon.className = 'bx bx-chevron-down';
-                    topMenu.style.height = '25px';
-                }
-                localStorage.setItem('menuOpen', isOpen);
+                body.classList.remove('menu-open');
             }
         }
-
-        // Инициализация
-        window.addEventListener('DOMContentLoaded', () => {
-            if (isMobileDevice()) {
-                topMenu.classList.add('mobile');
-                setMenuState(false);
-                toggleBtn.style.display = 'none';
-            } else {
-                topMenu.classList.remove('mobile');
-                toggleBtn.style.display = 'flex'; // показываем на ПК
-                const savedState = localStorage.getItem('menuOpen') === 'true';
-                setMenuState(savedState);
-            }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Устанавливаем случайный цвет для аватара
+            const randomColor = getRandomColor();
+            userAvatar.style.background = `linear-gradient(135deg, ${randomColor}, ${adjustColor(randomColor, 20)})`;
+            
+            // Добавляем обработчики для свайпа
+            setupSwipeHandlers();
         });
-
-        // Кнопка toggle работает только на ПК
-        toggleBtn.addEventListener('click', () => {
-            if (isMobileDevice()) return;
-            const isOpen = topMenu.classList.contains('open');
-            setMenuState(!isOpen);
-        });
-
-        // Клик по оверлею закрывает меню на мобилках
-        overlay.addEventListener('click', () => {
-            if (isMobileDevice() && topMenu.classList.contains('open')) {
-                setMenuState(false);
-            }
-        });
-
-        if (isMobileDevice()) {
-            let startX = 0;
-            let endX = 0;
-            const swipeThreshold = 80;
-            const openSwipeZone = 250;
-
-            document.addEventListener('touchstart', (e) => {
-                const touchX = e.touches[0].clientX;
-
-                if (touchX < openSwipeZone && !topMenu.classList.contains('open')) {
-                    startX = touchX;
-                } else if (topMenu.classList.contains('open') && touchX > topMenu.offsetWidth) {
-                    startX = touchX;
-                } else {
-                    startX = 0;
-                }
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                if (startX === 0) return;
-                endX = e.touches[0].clientX;
-            }, { passive: true });
-
-            document.addEventListener('touchend', () => {
-                if (startX === 0) return;
-
-                const deltaX = endX - startX;
-
-                if (!topMenu.classList.contains('open') && deltaX > swipeThreshold) {
-                    setMenuState(true);
-                } else if (topMenu.classList.contains('open') && deltaX < -swipeThreshold) {
-                    setMenuState(false);
-                }
-
-                startX = 0;
-                endX = 0;
-            });
+        
+        // Функция для настройки обработчиков свайпа
+        function setupSwipeHandlers() {
+            document.addEventListener('touchstart', handleTouchStart);
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', handleTouchEnd);
         }
-
+        
+        // Обработка начала касания
+        function handleTouchStart(e) {
+            if (e.touches.length === 1) {
+                startX = e.touches[0].clientX;
+                currentX = startX;
+                isSwiping = true;
+            }
+        }
+        
+        // Обработка движения пальца
+        function handleTouchMove(e) {
+            if (!isSwiping) return;
+            currentX = e.touches[0].clientX;
+            
+            // Если меню закрыто и свайп вправо
+            if (!menuOpen && currentX > startX) {
+                const diff = currentX - startX;
+                // Плавное открытие при свайпе
+                menuContent.style.transform = `translateX(${-120 + (diff / 5)}%)`;
+                menuContent.style.opacity = `${Math.min(1, diff / 200)}`;
+            }
+            // Если меню открыто и свайп влево
+            else if (menuOpen && currentX < startX) {
+                const diff = startX - currentX;
+                // Плавное закрытие при свайпе
+                menuContent.style.transform = `translateX(${- (diff / 5)}%)`;
+            }
+        }
+        
+        // Обработка окончания касания
+        function handleTouchEnd() {
+            if (!isSwiping) return;
+            
+            const diff = currentX - startX;
+            
+            // Открытие меню при свайпе вправо
+            if (!menuOpen && diff > swipeThreshold) {
+                menuOpen = true;
+                updateMenuState();
+            } 
+            // Закрытие меню при свайпе влево
+            else if (menuOpen && diff < -swipeThreshold) {
+                menuOpen = false;
+                updateMenuState();
+            } 
+            // Сброс позиции, если свайп недостаточный
+            else {
+                menuContent.style.transform = menuOpen ? 'translateX(0)' : 'translateX(-120%)';
+                menuContent.style.opacity = menuOpen ? '1' : '0';
+            }
+            
+            isSwiping = false;
+        }
     </script>
-
 </body>
-
 </html>

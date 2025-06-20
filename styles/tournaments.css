@@ -1,269 +1,367 @@
+:root {
+    --bg-color: #0a0b21;
+    --card-bg: rgba(16, 18, 42, 0.95);
+    --card-bg-hover: rgba(37, 36, 81, 0.98);
+    --text-primary: #e1e4ff;
+    --text-secondary: #a0a4d1;
+    --accent-primary-from: #7f6ffd;
+    --accent-primary-to: #b3a7ff;
+    --accent-danger: #ff6b6b;
+    --accent-success: #4ade80;
+    --accent-warning: #ffca62;
+    --tournament-accent: #7f6ffd;
+    --meeting-accent: #4ade80;
+    --btn-bg: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+    --btn-bg-hover: linear-gradient(135deg, #6d5ef5, #9d8eff);
+    --btn-success-bg: linear-gradient(135deg, var(--accent-success), #6dff9d);
+    --btn-success-hover: linear-gradient(135deg, #3ecf70, #5cff8a);
+    --btn-disabled-bg: linear-gradient(135deg, #4a5568, #718096);
+    --btn-disabled-hover: linear-gradient(135deg, #3d4755, #5e6978);
+    --font-family: 'Montserrat', sans-serif;
+    --shadow-card: 0 12px 40px rgba(82, 82, 142, 0.55);
+    --shadow-btn: 0 6px 20px rgba(127, 111, 253, 0.65);
+    --border-radius: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #E0E0E0;
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-family);
     line-height: 1.6;
-    margin: 0;
+    min-height: 100vh;
     padding: 0;
-    font-size: 0.9rem;
+    position: relative;
+    overflow-x: hidden;
 }
 
-h1,
-h2 {
-    color: #FFD700;
-    margin-bottom: 10px;
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(127, 111, 253, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(179, 167, 255, 0.15) 0%, transparent 20%),
+        linear-gradient(135deg, #0a0b21 0%, #141632 100%);
+    z-index: -1;
+}
+
+.container-tournaments {
+    max-width: 1200px;
+    margin: 4rem auto 5rem;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 900;
     text-align: center;
-    /* Центрирование заголовка */
+    margin-bottom: 2.5rem;
+    background: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 5px 15px rgba(127, 111, 253, 0.3);
+    animation: textGlow 6s infinite alternate;
 }
 
-a {
-    color: #1E90FF;
-    text-decoration: none;
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(127, 111, 253, 0.5);
+    }
+
+    100% {
+        text-shadow: 0 0 25px rgba(179, 167, 255, 0.8);
+    }
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-
-
-/* Основной контент */
-.main-content {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #1E1E1E;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-}
-
-/* Стили для секций */
-.user-info,
-.stats,
-.user-questions {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #2A2A2A;
-    border-radius: 5px;
-}
-
-.user-info p,
-.stats div {
-    margin: 5px 0;
-}
-
-/* Стили для списка вопросов */
-.questions-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.question-item {
-    margin-bottom: 15px;
-    padding: 15px;
-    background-color: #2A2A2A;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
-    border: 1px solid #333;
-    /* Обводка вокруг вопроса */
-}
-
-.question-item:hover {
-    background-color: #3A3A3A;
-    transform: translateY(-2px);
-}
-
-.question-meta {
-    color: #999;
-    /* Общий цвет для мета-информации */
-}
-
-.question-meta span strong {
-    color: #d0d0d0;
-    /* Цвет для "Категория", "Подкатегория" и т.д. */
-    font-weight: normal;
-}
-
-/* Кнопки */
-.btn-delete-question {
-    background-color: #FF4500;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    /* Меньше отступы */
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    font-size: 0.8rem;
-    /* Меньше размер шрифта */
-}
-
-.btn-delete-question:hover {
-    background-color: #FF6347;
-    transform: scale(1.05);
-}
-
-/* Стили для ссылок выхода */
-.logout-link {
-    display: block;
-    /* Блочный элемент для центрирования */
-    margin: 20px auto;
-    /* Автоматические отступы и margin-top */
-    color: #FF4500;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    text-align: center;
-    /* Центрирование текста */
-    width: fit-content;
-    /* Автоматическая ширина по контенту */
-}
-
-.logout-link:hover {
-    background-color: rgba(255, 69, 0, 0.2);
-    text-decoration: none;
-}
-
-/* Tournament list specific styles */
 .tournaments-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 0 10px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
 }
 
 .tournament-card {
-    background-color: #2A2A2A;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #333;
-    transition: background-color 0.3s, transform 0.3s;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
-    /*  */
+    height: 100%;
 }
 
 .tournament-card:hover {
-    background-color: #3A3A3A;
-    transform: translateY(-2px);
+    transform: translateY(-7px);
+    box-shadow: 0 15px 50px rgba(82, 82, 142, 0.7);
+    background: var(--card-bg-hover);
+}
+
+.tournament-card.tournament::before {
+    background: linear-gradient(90deg, var(--tournament-accent), #9d8eff);
+}
+
+.tournament-card.meeting::before {
+    background: linear-gradient(90deg, var(--meeting-accent), #6dff9d);
+}
+
+.tournament-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.type-label {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tournament .type-label {
+    background: var(--tournament-accent);
+}
+
+.meeting .type-label {
+    background: var(--meeting-accent);
 }
 
 .tournament-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    padding: 2rem 2rem 1.2rem;
+}
+
+.tournament-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.tournament-card:hover .tournament-title {
+    color: var(--accent-primary-to);
 }
 
 .tournament-info {
-    color: #999;
-    margin-bottom: 10px;
+    padding: 0 2rem;
+    flex-grow: 1;
 }
 
-.tournament-info span {
-    display: block;
-    margin-bottom: 5px;
+.tournament-info ul {
+    list-style: none;
+    margin-bottom: 1.5rem;
 }
 
-.tournament-info span strong {
-    color: #d0d0d0;
-    /* Цвет для "Категория", "Подкатегория" и т.д. */
+.tournament-info li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+    font-size: 1.05rem;
 }
 
-.btn-register {
-    background-color: #1E90FF;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
+.tournament-info li i {
+    width: 24px;
     text-align: center;
-    display: block;
-    margin-top: 10px;
+    color: var(--accent-primary-from);
+    font-size: 1.1rem;
 }
 
-.btn-register:hover {
-    background-color: #46a9ff;
+.prize-item i {
+    color: var(--accent-warning) !important;
 }
 
-.btn-register:disabled {
-    background-color: #555;
-    cursor: not-allowed;
+.description {
+    margin: 1.5rem 0;
+    padding: 1rem 0;
+    line-height: 1.7;
+    border-top: 1px dashed rgba(127, 111, 253, 0.3);
+    border-bottom: 1px dashed rgba(127, 111, 253, 0.3);
+    font-size: 1.1rem;
+    color: var(--text-primary);
 }
 
-.no-tournaments {
-    color: #cbd6ff;
-    text-align: center;
+.bottom-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem 2rem;
 }
 
-/* Progress bar styles */
+.progress-container {
+    margin-bottom: 1.2rem;
+}
+
 .progress-bar {
-    width: 100%;
-    height: 8px;
-    background-color: #333;
-    border-radius: 4px;
-    margin-top: 5px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     overflow: hidden;
+    margin-bottom: 0.5rem;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #81c784 0%, #4caf50 50%, #388e3c 100%);
-    border-radius: 4px;
-    width: 0%;
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, var(--accent-primary-from), var(--accent-primary-to));
+    border-radius: 6px;
+    transition: width 1s ease-out;
+}
+
+.tournament .progress-fill {
+    background: linear-gradient(90deg, var(--tournament-accent), #9d8eff);
+}
+
+.meeting .progress-fill {
+    background: linear-gradient(90deg, var(--meeting-accent), #6dff9d);
 }
 
 .registered-text {
-    color: #999;
-    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
 }
 
-/* Дополнительные стили для прикрепления элементов к низу */
-.tournament-card .bottom-section {
-    margin-top: auto;
-    /*  */
-    padding-top: 10px;
-    border-top: 1px solid #333;
+.btn-register {
+    background: var(--btn-bg);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    transition: all 0.3s ease;
+    padding: 0.9rem 1.8rem;
+    font-size: 1.05rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
 }
 
-/* Кастомные стили */
-.tournament-type {
-    background: linear-gradient(90deg, #87b9ff 0%, #5a8cff 50%, #3d6bff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    /* По умолчанию белый */
-    font-weight: bold;
-    font-size: 1.4rem;
+.btn-register:hover:not(:disabled) {
+    background: var(--btn-bg-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(127, 111, 253, 0.7);
 }
 
-.tournament-type.tournament {
-    background: linear-gradient(90deg, #ffb347 0%, #ff9100 50%, #cc7000 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    /* Оранжевый для "Турнир" */
+.btn-register:disabled {
+    background: var(--btn-success-bg);
+    cursor: not-allowed;
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
 }
 
-.tournament-title {
-    color: #ffffff;
-    /* Светло-серый */
-    font-size: 1.2rem;
-    margin: 0;
+.btn-register:disabled:hover {
+    background: var(--btn-success-hover);
+    transform: none;
 }
 
+.no-tournaments {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    margin: 0 auto;
+    max-width: 600px;
+}
 
+.no-tournaments i {
+    font-size: 4rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    display: block;
+}
 
+.no-tournaments p {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+}
 
-@media (max-width: 700px) {
-    .main-content {
-        margin-top: 0;
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tournament-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .tournaments-wrapper {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-tournaments {
+        padding: 0 1.5rem;
+        margin-top: 3rem;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .tournament-header,
+    .tournament-info,
+    .bottom-section {
+        padding: 1.5rem;
+    }
+
+    .tournament-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.9rem;
+    }
+
+    .tournaments-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .type-label {
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
     }
 }
