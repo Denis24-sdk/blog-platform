@@ -409,7 +409,7 @@ select:focus {
 
 @media (max-width: 768px) {
   .container-recommend {
-    padding: 0 1.5rem;
+    padding: 0 0rem;
     margin-top: 2rem;
   }
 

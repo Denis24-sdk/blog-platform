@@ -332,7 +332,7 @@ h1 {
 
 @media (max-width: 768px) {
     .container-tournaments {
-        padding: 0 1.5rem;
+        padding: 0;
         margin-top: 3rem;
     }
 

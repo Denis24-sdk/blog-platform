@@ -24,6 +24,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +50,8 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            touch-action: pan-y; /* Для свайпа */
+            touch-action: pan-y;
+            /* Для свайпа */
         }
 
         body {
@@ -57,7 +59,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             color: var(--text-primary);
             font-family: var(--font-family);
             min-height: 100vh;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, rgba(127, 111, 253, 0.15) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(179, 167, 255, 0.15) 0%, transparent 20%);
             padding: 20px;
@@ -150,8 +152,15 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
 
         /* Анимация волны при клике */
         @keyframes wave {
-            0% { transform: scale(1); opacity: 0.7; }
-            100% { transform: scale(1.8); opacity: 0; }
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
         }
 
         .menu-toggle:active::after {
@@ -208,13 +217,33 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             transform: translateX(0);
         }
 
-        .menu-open .nav-links li:nth-child(1) { transition-delay: 0.1s; }
-        .menu-open .nav-links li:nth-child(2) { transition-delay: 0.15s; }
-        .menu-open .nav-links li:nth-child(3) { transition-delay: 0.2s; }
-        .menu-open .nav-links li:nth-child(4) { transition-delay: 0.25s; }
-        .menu-open .nav-links li:nth-child(5) { transition-delay: 0.3s; }
-        .menu-open .nav-links li:nth-child(6) { transition-delay: 0.35s; }
-        .menu-open .nav-links li:nth-child(7) { transition-delay: 0.4s; }
+        .menu-open .nav-links li:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .menu-open .nav-links li:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .menu-open .nav-links li:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .menu-open .nav-links li:nth-child(4) {
+            transition-delay: 0.25s;
+        }
+
+        .menu-open .nav-links li:nth-child(5) {
+            transition-delay: 0.3s;
+        }
+
+        .menu-open .nav-links li:nth-child(6) {
+            transition-delay: 0.35s;
+        }
+
+        .menu-open .nav-links li:nth-child(7) {
+            transition-delay: 0.4s;
+        }
 
         .nav-links li a {
             display: flex;
@@ -325,9 +354,17 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
         }
 
         @keyframes pulseStatus {
-            0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+            }
         }
 
         /* Оверлей */
@@ -352,42 +389,62 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
 
         /* Адаптивность */
         @media (max-width: 768px) {
+
+            body {
+                background-image: none;
+                /* Убрать radial gradient на фоне */
+                background-color: var(--bg-color);
+            }
+
             .nav-menu {
                 top: 15px;
                 left: 15px;
             }
-            
+
             .menu-toggle {
                 width: 50px;
                 height: 50px;
             }
-            
+
             .menu-content {
                 width: calc(100% - 30px);
                 left: 15px;
                 top: 15px;
                 max-height: calc(100vh - 30px);
+
+                backdrop-filter: none !important;
+                background: rgba(16, 18, 42, 0.98);
+                /* Чуть плотнее, без blur */
             }
-            
+
             .hamburger {
                 width: 26px;
                 height: 20px;
             }
-            
+
             .hamburger span {
                 height: 2.5px;
             }
-            
+
             .menu-open .hamburger span:nth-child(1) {
                 transform: translateY(9px) rotate(45deg);
             }
-            
+
             .menu-open .hamburger span:nth-child(3) {
                 transform: translateY(-9px) rotate(-45deg);
             }
         }
+
+        /* Отключение анимаций и переходов на телефонах */
+        body.no-animations *,
+        body.no-animations *::before,
+        body.no-animations *::after {
+            transition: none !important;
+            animation: none !important;
+        }
     </style>
 </head>
+
 <body>
     <!-- Навигационное меню -->
     <div class="nav-menu">
@@ -398,7 +455,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
                 <span></span>
             </div>
         </button>
-        
+
         <div class="menu-content" id="menuContent">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar"><?= htmlspecialchars($firstLetter) ?></div>
@@ -407,7 +464,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
                     <span class="status-indicator"></span> Онлайн
                 </div>
             </div>
-            
+
             <ul class="nav-links">
                 <li><a href="index.php"><i class='bx bx-user'></i>Аккаунт</a></li>
                 <li><a href="questions.php"><i class='bx bx-message-rounded-dots'></i>Форум</a></li>
@@ -419,7 +476,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             </ul>
         </div>
     </div>
-    
+
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <script>
@@ -428,52 +485,24 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
         const menuOverlay = document.getElementById('menuOverlay');
         const body = document.body;
         const userAvatar = document.getElementById('userAvatar');
-        
+
         let menuOpen = false;
         let startX = 0;
         let currentX = 0;
-        let isSwiping = false;
-        const swipeThreshold = 50; // Минимальное расстояние свайпа для активации
-        
-        // Функция для генерации случайного цвета
-        function getRandomColor() {
-            const colors = [
-                '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', 
-                '#98D8C8', '#F78FB3', '#7F6FFD', '#4ADE80',
-                '#FFCA62', '#6A89CC', '#F8C471', '#48DBFB'
-            ];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-        
-        // Функция для корректировки цвета (создание градиента)
-        function adjustColor(color, percent) {
-            let R = parseInt(color.substring(1,3),16);
-            let G = parseInt(color.substring(3,5),16);
-            let B = parseInt(color.substring(5,7),16);
-            
-            R = Math.min(255, Math.max(0, R + R * percent/100));
-            G = Math.min(255, Math.max(0, G + G * percent/100));
-            B = Math.min(255, Math.max(0, B + B * percent/100));
-            
-            const RR = Math.round(R).toString(16).padStart(2, '0');
-            const GG = Math.round(G).toString(16).padStart(2, '0');
-            const BB = Math.round(B).toString(16).padStart(2, '0');
-            
-            return `#${RR}${GG}${BB}`;
-        }
-        
+        let isDragging = false;
+
         // Переключение меню
         menuToggle.addEventListener('click', () => {
             menuOpen = !menuOpen;
             updateMenuState();
         });
-        
+
         // Закрытие меню при клике на оверлей
         menuOverlay.addEventListener('click', () => {
             menuOpen = false;
             updateMenuState();
         });
-        
+
         // Закрытие меню при нажатии Esc
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && menuOpen) {
@@ -481,85 +510,96 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
                 updateMenuState();
             }
         });
-        
+
         function updateMenuState() {
             if (menuOpen) {
                 body.classList.add('menu-open');
+                menuContent.style.transform = 'translateX(0)';
             } else {
                 body.classList.remove('menu-open');
+                menuContent.style.transform = 'translateX(-120%)';
             }
         }
-        
-        // Инициализация при загрузке страницы
+
+        // Свайп на мобильных
+        function handleTouchStart(e) {
+            if (e.touches.length !== 1) return;
+            startX = e.touches[0].clientX;
+            currentX = startX;
+            isDragging = true;
+            menuContent.style.transition = 'none';
+        }
+
+        function handleTouchMove(e) {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diffX = currentX - startX;
+
+            if (!menuOpen && diffX > 0 && diffX < 300) {
+                menuContent.style.transform = `translateX(calc(-120% + ${diffX}px))`;
+            } else if (menuOpen && diffX < 0 && diffX > -300) {
+                menuContent.style.transform = `translateX(${diffX}px)`;
+            }
+        }
+
+        function handleTouchEnd() {
+            if (!isDragging) return;
+            const diffX = currentX - startX;
+            menuContent.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+
+            if (!menuOpen && diffX > 80) {
+                menuOpen = true;
+            } else if (menuOpen && diffX < -80) {
+                menuOpen = false;
+            }
+
+            updateMenuState();
+            isDragging = false;
+        }
+
+        document.addEventListener('touchstart', handleTouchStart);
+        document.addEventListener('touchmove', handleTouchMove);
+        document.addEventListener('touchend', handleTouchEnd);
+
+        // Цвет для аватарки
+        function getRandomColor() {
+            const colors = [
+                '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A',
+                '#98D8C8', '#F78FB3', '#7F6FFD', '#4ADE80',
+                '#FFCA62', '#6A89CC', '#F8C471', '#48DBFB'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function adjustColor(color, percent) {
+            let R = parseInt(color.substring(1, 3), 16);
+            let G = parseInt(color.substring(3, 5), 16);
+            let B = parseInt(color.substring(5, 7), 16);
+
+            R = Math.min(255, Math.max(0, R + R * percent / 100));
+            G = Math.min(255, Math.max(0, G + G * percent / 100));
+            B = Math.min(255, Math.max(0, B + B * percent / 100));
+
+            const RR = Math.round(R).toString(16).padStart(2, '0');
+            const GG = Math.round(G).toString(16).padStart(2, '0');
+            const BB = Math.round(B).toString(16).padStart(2, '0');
+
+            return `#${RR}${GG}${BB}`;
+        }
+
+        // При загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
-            // Устанавливаем случайный цвет для аватара
             const randomColor = getRandomColor();
             userAvatar.style.background = `linear-gradient(135deg, ${randomColor}, ${adjustColor(randomColor, 20)})`;
-            
-            // Добавляем обработчики для свайпа
-            setupSwipeHandlers();
+
+            // Отключаем анимации на мобильных
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            if (isMobile) {
+                body.classList.add('no-animations');
+            }
         });
-        
-        // Функция для настройки обработчиков свайпа
-        function setupSwipeHandlers() {
-            document.addEventListener('touchstart', handleTouchStart);
-            document.addEventListener('touchmove', handleTouchMove);
-            document.addEventListener('touchend', handleTouchEnd);
-        }
-        
-        // Обработка начала касания
-        function handleTouchStart(e) {
-            if (e.touches.length === 1) {
-                startX = e.touches[0].clientX;
-                currentX = startX;
-                isSwiping = true;
-            }
-        }
-        
-        // Обработка движения пальца
-        function handleTouchMove(e) {
-            if (!isSwiping) return;
-            currentX = e.touches[0].clientX;
-            
-            // Если меню закрыто и свайп вправо
-            if (!menuOpen && currentX > startX) {
-                const diff = currentX - startX;
-                // Плавное открытие при свайпе
-                menuContent.style.transform = `translateX(${-120 + (diff / 5)}%)`;
-                menuContent.style.opacity = `${Math.min(1, diff / 200)}`;
-            }
-            // Если меню открыто и свайп влево
-            else if (menuOpen && currentX < startX) {
-                const diff = startX - currentX;
-                // Плавное закрытие при свайпе
-                menuContent.style.transform = `translateX(${- (diff / 5)}%)`;
-            }
-        }
-        
-        // Обработка окончания касания
-        function handleTouchEnd() {
-            if (!isSwiping) return;
-            
-            const diff = currentX - startX;
-            
-            // Открытие меню при свайпе вправо
-            if (!menuOpen && diff > swipeThreshold) {
-                menuOpen = true;
-                updateMenuState();
-            } 
-            // Закрытие меню при свайпе влево
-            else if (menuOpen && diff < -swipeThreshold) {
-                menuOpen = false;
-                updateMenuState();
-            } 
-            // Сброс позиции, если свайп недостаточный
-            else {
-                menuContent.style.transform = menuOpen ? 'translateX(0)' : 'translateX(-120%)';
-                menuContent.style.opacity = menuOpen ? '1' : '0';
-            }
-            
-            isSwiping = false;
-        }
+
     </script>
 </body>
+
 </html>
