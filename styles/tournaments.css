@@ -9,8 +9,10 @@
     --accent-danger: #ff6b6b;
     --accent-success: #4ade80;
     --accent-warning: #ffca62;
-    --tournament-accent: #7f6ffd;
+    --tournament-accent: #3b82f6;
+    /* голубой цвет */
     --meeting-accent: #4ade80;
+    /* зелёный цвет */
     --btn-bg: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
     --btn-bg-hover: linear-gradient(135deg, #6d5ef5, #9d8eff);
     --btn-success-bg: linear-gradient(135deg, var(--accent-success), #6dff9d);
@@ -22,6 +24,7 @@
     --shadow-btn: 0 6px 20px rgba(127, 111, 253, 0.65);
     --border-radius: 20px;
 }
+
 
 * {
     box-sizing: border-box;
@@ -150,7 +153,7 @@ h1 {
 }
 
 .tournament-header {
-    padding: 2rem 2rem 1.2rem;
+    padding: 2rem 9rem 1.2rem 2rem;
 }
 
 .tournament-title {
@@ -340,11 +343,23 @@ h1 {
         font-size: 2.2rem;
     }
 
-    .tournament-header,
     .tournament-info,
     .bottom-section {
         padding: 1.5rem;
     }
+
+    .tournament-header {
+        padding: 2rem 2rem 1.2rem;
+    }
+
+
+
+    .type-label {
+        position: relative;
+        width: 7rem;
+        margin: auto 10rem auto 2.5rem;
+    }
+
 
     .tournament-title {
         font-size: 1.5rem;

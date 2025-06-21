@@ -25,8 +25,6 @@ if (!is_logged_in()) {
 
 $user_id = $_SESSION['user_id'];
 
-// Показываем уведомление только если сессионный флаг установлен и устройство — мобильное
-$show_swipe_notification = ($_SESSION['show_swipe_notification'] ?? false) && is_mobile();
 
 // Обработка удаления вопроса
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete_question_id'])) {
@@ -126,13 +124,6 @@ $user_questions = $stmt->fetchAll();
 </head>
 
 <body>
-    <?php if ($show_swipe_notification): ?>
-        <div id="swipe-notification" role="alert" aria-live="polite">
-            <span>Свайпните для открытия меню</span>
-            <button id="close-swipe-notification" aria-label="Закрыть уведомление">×</button>
-        </div>
-    <?php endif; ?>
-
     <?php include 'menu.php'; ?>
 
     <main class="main-content" role="main" aria-label="Личный кабинет пользователя">

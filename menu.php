@@ -26,10 +26,10 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Навигационное меню</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
     <style>
         :root {
             --bg-color: #0a0b21;
@@ -50,8 +50,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            touch-action: pan-y;
-            /* Для свайпа */
+            touch-action: pan-y; /* важно для вертикальной прокрутки */
         }
 
         body {
@@ -84,43 +83,30 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
         }
 
         .menu-toggle {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-primary-from), var(--accent-primary-to));
+            width: 40px;
+            height: 40px;
+            background: transparent; /* Убираем фон */
             border: none;
-            border-radius: 50%;
+            border-radius: 0; /* без скруглений */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: var(--shadow-btn);
+            box-shadow: none; /* убираем тень */
             transition: var(--transition);
             z-index: 1001;
             position: relative;
-            overflow: hidden;
-        }
-
-        .menu-toggle::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-primary-to), var(--accent-primary-from));
-            opacity: 0;
-            transition: var(--transition);
-            border-radius: 50%;
+            overflow: visible;
         }
 
         .menu-toggle:hover::before {
-            opacity: 1;
+            opacity: 0; /* отключаем эффект при наведении */
         }
 
         .hamburger {
             position: relative;
-            width: 30px;
-            height: 24px;
+            width: 24px; /* чуть шире для удобства */
+            height: 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -131,14 +117,14 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             height: 3px;
             width: 100%;
             background: white;
-            border-radius: 3px;
+            border-radius: 2px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: center;
         }
 
-        /* Анимация при открытии меню - классический гамбургер → крестик */
+        /* Анимация при открытии меню - гамбургер → крестик */
         .menu-open .hamburger span:nth-child(1) {
-            transform: translateY(10.5px) rotate(45deg);
+            transform: translateY(7.5px) rotate(45deg);
         }
 
         .menu-open .hamburger span:nth-child(2) {
@@ -147,31 +133,10 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
         }
 
         .menu-open .hamburger span:nth-child(3) {
-            transform: translateY(-10.5px) rotate(-45deg);
+            transform: translateY(-7.5px) rotate(-45deg);
         }
 
-        /* Анимация волны при клике */
-        @keyframes wave {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.8);
-                opacity: 0;
-            }
-        }
-
-        .menu-toggle:active::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            animation: wave 0.6s ease-out;
-        }
+        /* Анимация волны убрана */
 
         .menu-content {
             position: fixed;
@@ -182,7 +147,6 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             box-shadow: var(--shadow-card);
             padding: 80px 20px 20px;
             width: 280px;
-            height: auto;
             max-height: 90vh;
             overflow-y: auto;
             z-index: 999;
@@ -392,18 +356,29 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
 
             body {
                 background-image: none;
-                /* Убрать radial gradient на фоне */
                 background-color: var(--bg-color);
             }
 
             .nav-menu {
                 top: 15px;
                 left: 15px;
+                width: 50px;
+                height: 50px;
             }
 
             .menu-toggle {
-                width: 50px;
-                height: 50px;
+                width: 36px;
+                height: 36px;
+                z-index: 1101;
+            }
+
+            .hamburger {
+                width: 20px;
+                height: 15px;
+            }
+
+            .hamburger span {
+                height: 2.5px;
             }
 
             .menu-content {
@@ -411,36 +386,19 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
                 left: 15px;
                 top: 15px;
                 max-height: calc(100vh - 30px);
-
                 backdrop-filter: none !important;
                 background: rgba(16, 18, 42, 0.98);
-                /* Чуть плотнее, без blur */
+                box-shadow: none;
+                padding: 25px 15px 15px;
+                border: none;
+                border-radius: 12px;
             }
 
-            .hamburger {
-                width: 26px;
-                height: 20px;
+            /* Отключаем анимации на мобилках */
+            body.no-animations * {
+                transition: none !important;
+                animation: none !important;
             }
-
-            .hamburger span {
-                height: 2.5px;
-            }
-
-            .menu-open .hamburger span:nth-child(1) {
-                transform: translateY(9px) rotate(45deg);
-            }
-
-            .menu-open .hamburger span:nth-child(3) {
-                transform: translateY(-9px) rotate(-45deg);
-            }
-        }
-
-        /* Отключение анимаций и переходов на телефонах */
-        body.no-animations *,
-        body.no-animations *::before,
-        body.no-animations *::after {
-            transition: none !important;
-            animation: none !important;
         }
     </style>
 </head>
@@ -456,7 +414,7 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
             </div>
         </button>
 
-        <div class="menu-content" id="menuContent">
+        <div class="menu-content" id="menuContent" tabindex="-1" aria-hidden="true">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar"><?= htmlspecialchars($firstLetter) ?></div>
                 <div class="username" id="username"><?= htmlspecialchars($user['username']) ?></div>
@@ -480,126 +438,89 @@ $firstLetter = mb_substr($user['username'], 0, 1, 'UTF-8');
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const menuContent = document.getElementById('menuContent');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const body = document.body;
-        const userAvatar = document.getElementById('userAvatar');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuContent = document.getElementById('menuContent');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const body = document.body;
+    const userAvatar = document.getElementById('userAvatar');
 
-        let menuOpen = false;
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
+    let menuOpen = false;
 
-        // Переключение меню
-        menuToggle.addEventListener('click', () => {
-            menuOpen = !menuOpen;
-            updateMenuState();
-        });
+    // Переключение меню по клику
+    menuToggle.addEventListener('click', () => {
+        menuOpen = !menuOpen;
+        updateMenuState();
+    });
 
-        // Закрытие меню при клике на оверлей
-        menuOverlay.addEventListener('click', () => {
+    // Закрытие меню при клике на оверлей
+    menuOverlay.addEventListener('click', () => {
+        menuOpen = false;
+        updateMenuState();
+    });
+
+    // Закрытие меню при нажатии Esc
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuOpen) {
             menuOpen = false;
             updateMenuState();
-        });
-
-        // Закрытие меню при нажатии Esc
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && menuOpen) {
-                menuOpen = false;
-                updateMenuState();
-            }
-        });
-
-        function updateMenuState() {
-            if (menuOpen) {
-                body.classList.add('menu-open');
-                menuContent.style.transform = 'translateX(0)';
-            } else {
-                body.classList.remove('menu-open');
-                menuContent.style.transform = 'translateX(-120%)';
-            }
         }
+    });
 
-        // Свайп на мобильных
-        function handleTouchStart(e) {
-            if (e.touches.length !== 1) return;
-            startX = e.touches[0].clientX;
-            currentX = startX;
-            isDragging = true;
-            menuContent.style.transition = 'none';
+    function updateMenuState() {
+        if (menuOpen) {
+            body.classList.add('menu-open');
+            menuContent.style.transform = 'translateX(0)';
+            menuContent.setAttribute('aria-hidden', 'false');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            menuContent.focus();
+        } else {
+            body.classList.remove('menu-open');
+            menuContent.style.transform = 'translateX(-120%)';
+            menuContent.setAttribute('aria-hidden', 'true');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.focus();
         }
+    }
 
-        function handleTouchMove(e) {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX;
-            const diffX = currentX - startX;
+    // Цвет для аватарки
+    function getRandomColor() {
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A',
+            '#98D8C8', '#F78FB3', '#7F6FFD', '#4ADE80',
+            '#FFCA62', '#6A89CC', '#F8C471', '#48DBFB'
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
 
-            if (!menuOpen && diffX > 0 && diffX < 300) {
-                menuContent.style.transform = `translateX(calc(-120% + ${diffX}px))`;
-            } else if (menuOpen && diffX < 0 && diffX > -300) {
-                menuContent.style.transform = `translateX(${diffX}px)`;
-            }
+    function adjustColor(color, percent) {
+        let R = parseInt(color.substring(1, 3), 16);
+        let G = parseInt(color.substring(3, 5), 16);
+        let B = parseInt(color.substring(5, 7), 16);
+
+        R = Math.min(255, Math.max(0, R + R * percent / 100));
+        G = Math.min(255, Math.max(0, G + G * percent / 100));
+        B = Math.min(255, Math.max(0, B + B * percent / 100));
+
+        const RR = Math.round(R).toString(16).padStart(2, '0');
+        const GG = Math.round(G).toString(16).padStart(2, '0');
+        const BB = Math.round(B).toString(16).padStart(2, '0');
+
+        return `#${RR}${GG}${BB}`;
+    }
+
+    // При загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+        const randomColor = getRandomColor();
+        userAvatar.style.background = `linear-gradient(135deg, ${randomColor}, ${adjustColor(randomColor, 20)})`;
+
+        // Отключаем анимации на мобильных
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+        if (isMobile) {
+            body.classList.add('no-animations');
         }
+    });
+</script>
 
-        function handleTouchEnd() {
-            if (!isDragging) return;
-            const diffX = currentX - startX;
-            menuContent.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
-
-            if (!menuOpen && diffX > 80) {
-                menuOpen = true;
-            } else if (menuOpen && diffX < -80) {
-                menuOpen = false;
-            }
-
-            updateMenuState();
-            isDragging = false;
-        }
-
-        document.addEventListener('touchstart', handleTouchStart);
-        document.addEventListener('touchmove', handleTouchMove);
-        document.addEventListener('touchend', handleTouchEnd);
-
-        // Цвет для аватарки
-        function getRandomColor() {
-            const colors = [
-                '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A',
-                '#98D8C8', '#F78FB3', '#7F6FFD', '#4ADE80',
-                '#FFCA62', '#6A89CC', '#F8C471', '#48DBFB'
-            ];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
-        function adjustColor(color, percent) {
-            let R = parseInt(color.substring(1, 3), 16);
-            let G = parseInt(color.substring(3, 5), 16);
-            let B = parseInt(color.substring(5, 7), 16);
-
-            R = Math.min(255, Math.max(0, R + R * percent / 100));
-            G = Math.min(255, Math.max(0, G + G * percent / 100));
-            B = Math.min(255, Math.max(0, B + B * percent / 100));
-
-            const RR = Math.round(R).toString(16).padStart(2, '0');
-            const GG = Math.round(G).toString(16).padStart(2, '0');
-            const BB = Math.round(B).toString(16).padStart(2, '0');
-
-            return `#${RR}${GG}${BB}`;
-        }
-
-        // При загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            const randomColor = getRandomColor();
-            userAvatar.style.background = `linear-gradient(135deg, ${randomColor}, ${adjustColor(randomColor, 20)})`;
-
-            // Отключаем анимации на мобильных
-            const isMobile = window.matchMedia("(max-width: 768px)").matches;
-            if (isMobile) {
-                body.classList.add('no-animations');
-            }
-        });
-
-    </script>
 </body>
 
 </html>
